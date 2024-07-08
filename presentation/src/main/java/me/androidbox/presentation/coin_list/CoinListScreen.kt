@@ -10,8 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
 import me.androidbox.presentation.coin_list.components.CoinListCard
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
@@ -33,7 +35,10 @@ fun CoinListScreen(
             contentPadding = paddingValues
         ) {
             item {
-                Text(text = "Buy, sell and hold crypto")
+                Text(text = "Buy, sell and hold crypto",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground)
             }
 
             items(
