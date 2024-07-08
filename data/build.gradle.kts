@@ -14,6 +14,13 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        /* Retrieves API from local.properties */
+        val properties = org.jetbrains.kotlin.konan.properties.Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+
+        buildConfigField("String", "COIN_RANKING_API_KEY", "${properties.getProperty("COIN_RANKING_API_KEY")}")
+        buildConfigField("String", "BASE_COIN_RANKING_ENDPOINT", "\"https://api.coinranking.com/v2\"")
     }
 
     buildTypes {
@@ -31,6 +38,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
