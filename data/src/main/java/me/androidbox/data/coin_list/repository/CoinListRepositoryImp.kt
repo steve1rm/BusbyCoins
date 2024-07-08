@@ -1,15 +1,23 @@
 package me.androidbox.data.coin_list.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
+import me.androidbox.data.coin_list.dto.CoinDto
 import me.androidbox.data.coin_list.mappers.toCoinListModel
+import me.androidbox.data.coin_list.pager.CoinListPager
 import me.androidbox.data.coin_list.remote_data_source.CoinListRemoteDataSource
 import me.androidbox.domain.coin_list.models.CoinListModel
+import me.androidbox.domain.coin_list.models.CoinModel
 import me.androidbox.domain.coin_list.repository.CoinListRepository
 import me.androidbox.domain.utils.CheckResult
 import me.androidbox.domain.utils.DataError
 import me.androidbox.domain.utils.ErrorModel
 
 class CoinListRepositoryImp(
-    private val coinListRemoteDataSource: CoinListRemoteDataSource
+    private val coinListRemoteDataSource: CoinListRemoteDataSource,
+    private val coinListPager: CoinListPager
 ) : CoinListRepository {
     override suspend fun fetchCoinList(): CheckResult<CoinListModel, DataError.Network, ErrorModel> {
 
@@ -29,5 +37,14 @@ class CoinListRepositoryImp(
                 )
             }
         }
+    }
+
+    fun getPagedCoinList(): Flow<PagingData<CoinModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+            pagingSourceFactory = {
+                coinListPager
+            }
+        ).flow
     }
 }

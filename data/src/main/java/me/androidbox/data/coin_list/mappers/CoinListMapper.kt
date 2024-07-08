@@ -27,7 +27,7 @@ fun CoinListDto.toCoinListModel(): CoinListModel {
                     btcPrice = coinDto.btcPrice,
                     change = coinDto.change,
                     coinrankingUrl = coinDto.coinrankingUrl,
-                    color = coinDto.color,
+                    color = coinDto.color.orEmpty(),
                     hVolume = coinDto.h24Volume,
                     iconUrl = coinDto.iconUrl,
                     lowVolume = coinDto.lowVolume,

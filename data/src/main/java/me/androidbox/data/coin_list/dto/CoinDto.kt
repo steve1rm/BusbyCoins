@@ -9,7 +9,7 @@ data class CoinDto(
     val btcPrice: String,
     val change: String,
     val coinrankingUrl: String,
-    val color: String,
+    val color: String?,
     val contractAddresses: List<String>,
     @SerialName("24hVolume")
     val h24Volume: String,
