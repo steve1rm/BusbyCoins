@@ -25,11 +25,14 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            isMinifyEnabled = false
         }
     }
     compileOptions {
@@ -57,6 +60,7 @@ dependencies {
     implementation(libs.securityCrypto)
     implementation(libs.library.base)
     implementation(libs.coroutines)
+    implementation("co.touchlab:kermit:2.0.4")
 
     testImplementation(libs.truth)
     testImplementation(libs.mockito.kotlin)

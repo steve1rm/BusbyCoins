@@ -14,8 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import me.androidbox.data.coin_list.remote_data_source.CoinListRemoteDataSource
-import me.androidbox.data.coin_list.remote_data_source.imp.CoinListRemoteDataSourceImp
-import me.androidbox.data.network_client.HttpKtorClient
 import me.androidbox.domain.utils.CheckResult
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 import org.koin.compose.koinInject
@@ -38,7 +36,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-
 
             BusbyCoinsTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
