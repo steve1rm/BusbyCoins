@@ -26,7 +26,7 @@ class CoinListRemoteDataSourceImp(
                         this.parameters.append("limit", limit.toString())
                     }
                     headers {
-                        this.append(HttpHeaders.Authorization, BuildConfig.COIN_RANKING_API_KEY)
+                        this.append("x-access-token", BuildConfig.COIN_RANKING_API_KEY)
                     }
                 }
 

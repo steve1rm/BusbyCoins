@@ -23,9 +23,6 @@ class CoinListPager(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CoinModel> {
         /** If the key is null we are at the first page (1) */
-      /*  val position = params.key ?: 1
-        val offset = if (params.key != null) ((position - 1) * 20) + 1 else 1*/
-
         val position = params.key ?: 1
         val offset = (position - 1) * 20 + 1
 
