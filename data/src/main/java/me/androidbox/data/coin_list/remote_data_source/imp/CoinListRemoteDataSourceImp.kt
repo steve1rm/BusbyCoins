@@ -16,10 +16,15 @@ import me.androidbox.domain.utils.DataError
 class CoinListRemoteDataSourceImp(
     private val httpClient: HttpClient,
 ) : CoinListRemoteDataSource {
-    override suspend fun fetchCoinList(): CheckResult<CoinListDto, DataError.Network, ErrorDto> {
+    override suspend fun fetchCoinList(offSet: Int, limit: Int): CheckResult<CoinListDto, DataError.Network, ErrorDto> {
         val safeResult = safeApiRequest<CoinListDto> {
+
             val response = httpClient
                 .get(Routes.COINS) {
+                    url {
+                        this.parameters.append("offset", offSet.toString())
+                        this.parameters.append("limit", limit.toString())
+                    }
                     headers {
                         this.append(HttpHeaders.Authorization, BuildConfig.COIN_RANKING_API_KEY)
                     }

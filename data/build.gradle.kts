@@ -60,7 +60,8 @@ dependencies {
     implementation(libs.securityCrypto)
     implementation(libs.library.base)
     implementation(libs.coroutines)
-    implementation("co.touchlab:kermit:2.0.4")
+    implementation(libs.kermit)
+    implementation(libs.androidx.paging.compose)
 
     testImplementation(libs.truth)
     testImplementation(libs.mockito.kotlin)
