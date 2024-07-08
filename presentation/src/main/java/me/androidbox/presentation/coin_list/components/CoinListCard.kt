@@ -34,6 +34,7 @@ import io.kamel.image.asyncPainterResource
 import me.androidbox.presentation.R
 import me.androidbox.presentation.coin_list.CoinListState
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
+import me.androidbox.presentation.utils.toFormattedPrice
 
 @Composable
 fun CoinListCard(
@@ -58,7 +59,7 @@ fun CoinListCard(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(2f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -102,7 +103,7 @@ fun CoinListCard(
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "$${coinListState.price}",
+                    text = "$${coinListState.price.toFormattedPrice()}",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.End,
