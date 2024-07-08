@@ -1,5 +1,6 @@
 package me.androidbox.presentation.coin_list.components
 
+import androidx.annotation.ColorInt
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,13 +18,17 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import me.androidbox.presentation.coin_list.CoinListState
@@ -37,7 +42,7 @@ fun CoinListCard(
     Card(
         shape = RoundedCornerShape(size = 8.dp),
         elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 6.dp
+            defaultElevation = 2.dp
         ),
         modifier = modifier
             .fillMaxWidth()
@@ -70,23 +75,43 @@ fun CoinListCard(
                 Spacer(modifier.width(16.dp))
 
                 Column {
-                    Text(text = coinListState.name)
+                    Text(
+                        text = coinListState.name,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
 
-                    Text(text = coinListState.symbol)
+                    Text(
+                        text = coinListState.symbol,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
 
             Column(
                 horizontalAlignment = Alignment.End
             ) {
-                Text(text = "$${coinListState.price}")
+                Text(
+                    text = "$${coinListState.price}",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
 
                 Row {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowUp,
                         contentDescription = null
                     )
-                    Text(text = coinListState.change)
+                    Text(
+                        text = coinListState.change,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF13BC24)
+                    )
                 }
             }
         }

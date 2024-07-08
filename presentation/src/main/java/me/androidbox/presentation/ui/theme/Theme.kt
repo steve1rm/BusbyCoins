@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
@@ -16,21 +17,21 @@ val DarkColorScheme = darkColorScheme(
     secondary = BusbyWhite,
     tertiary = BusbyWhite,
     primaryContainer = BusbyGreen30,
-    onPrimary = BusbyBlack,
+    onPrimary = BusbyBlackLight,
     onBackground = BusbyWhite,
     onSurface = BusbyWhite,
     onSurfaceVariant = BusbyGray,
     error = BusbyDarkRed
 )
 
-val LightColorScheme = darkColorScheme(
+val LightColorScheme = lightColorScheme(
     primary = BusbyGreenLight,
     background = BusbyBlackLight,
     surface = BusbyDarkGrayLight,
     secondary = BusbyWhiteLight,
     tertiary = BusbyWhiteLight,
     primaryContainer = BusbyGreen30Light,
-    onPrimary = BusbyBlackLight,
+    onPrimary = BusbyBlack,
     onBackground = BusbyWhiteLight,
     onSurface = BusbyWhiteLight,
     onSurfaceVariant = BusbyGrayLight,
@@ -45,11 +46,6 @@ fun BusbyCoinsTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
