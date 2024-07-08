@@ -1,6 +1,8 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.serialization)
+    alias(libs.plugins.realm)
 }
 
 android {
@@ -33,11 +35,24 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
 
+    implementation(libs.timber)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(libs.bundles.ktor)
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.ktor)
+    implementation(libs.securityCrypto)
+    implementation(libs.library.base)
+    implementation(libs.coroutines)
+
+    testImplementation(libs.truth)
+    testImplementation(libs.mockito.kotlin)
+
+    testImplementation(libs.ktor.client.mock)
+    testImplementation(libs.coroutinesTest)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
