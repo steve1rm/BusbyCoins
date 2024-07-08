@@ -4,19 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import me.androidbox.data.coin_list.remote_data_source.CoinListRemoteDataSource
-import me.androidbox.domain.utils.CheckResult
+import cafe.adriel.voyager.navigator.Navigator
+import me.androidbox.busbycoins.navigation.CoinListScreenRoute
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
-import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            val coinListRemoteDataSourceImp = koinInject<CoinListRemoteDataSource>()
+         /*   val coinListRemoteDataSourceImp = koinInject<CoinListRemoteDataSource>()
 
             lifecycleScope.launch {
                 val result = coinListRemoteDataSourceImp.fetchCoinList()
@@ -35,15 +29,10 @@ class MainActivity : ComponentActivity() {
                         println(result.data)
                     }
                 }
-            }
+            }*/
 
             BusbyCoinsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+               Navigator(screen = CoinListScreenRoute)
             }
         }
     }
