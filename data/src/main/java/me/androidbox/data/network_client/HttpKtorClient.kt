@@ -11,9 +11,8 @@ import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import io.realm.kotlin.internal.interop.BuildConfig
 import kotlinx.serialization.json.Json
-import timber.log.Timber
+import me.androidbox.data.BuildConfig
 
 class HttpKtorClient {
 
@@ -32,7 +31,9 @@ class HttpKtorClient {
             install(Logging) {
                 logger = object : Logger {
                     override fun log(message: String) {
-                        Timber.d(message)
+                        co.touchlab.kermit.Logger.d {
+                            message
+                        }
                     }
                 }
 
