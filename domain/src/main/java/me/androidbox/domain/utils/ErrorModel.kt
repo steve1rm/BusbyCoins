@@ -1,6 +1,7 @@
 package me.androidbox.domain.utils
 
 data class ErrorModel(
-    val code: String,
-    val detail: String
+    val status: String,
+    val type: String,
+    val message: String
 )

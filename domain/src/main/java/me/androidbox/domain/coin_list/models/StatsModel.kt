@@ -1,9 +1,6 @@
-package me.androidbox.data.coin_list_dtos
+package me.androidbox.domain.coin_list.models
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class StatsDto(
+data class StatsModel(
     val total: Int,
     val total24hVolume: String,
     val totalCoins: Int,

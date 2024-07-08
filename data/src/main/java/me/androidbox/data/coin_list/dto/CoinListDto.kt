@@ -1,4 +1,4 @@
-package me.androidbox.data.coin_list_dtos
+package me.androidbox.data.coin_list.dto
 
 
 import kotlinx.serialization.Serializable

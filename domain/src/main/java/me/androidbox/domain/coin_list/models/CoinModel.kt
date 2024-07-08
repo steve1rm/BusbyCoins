@@ -1,17 +1,12 @@
-package me.androidbox.data.coin_list_dtos
+package me.androidbox.domain.coin_list.models
 
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class CoinDto(
+data class CoinModel(
     val btcPrice: String,
     val change: String,
     val coinrankingUrl: String,
     val color: String,
     val contractAddresses: List<String>,
-    @SerialName("24hVolume")
     val hVolume: String,
     val iconUrl: String,
     val listedAt: Int,
