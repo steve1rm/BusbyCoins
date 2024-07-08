@@ -1,6 +1,5 @@
 package me.androidbox.presentation.coin_list.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,19 +15,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import me.androidbox.presentation.R
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
+import me.androidbox.presentation.coin_list.CoinListState
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 
 @Composable
 fun CoinListCard(
+    coinListState: CoinListState,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -52,32 +55,38 @@ fun CoinListCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Image(
+                KamelImage(
                     modifier = Modifier.size(40.dp),
-                    painter = painterResource(R.drawable.bitcoin),
-                    contentDescription = null
+                    resource = asyncPainterResource(
+                        data = coinListState.imageUri
+                    ),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    onLoading = {
+                        CircularProgressIndicator()
+                    }
                 )
 
                 Spacer(modifier.width(16.dp))
 
                 Column {
-                    Text(text = "BitCoin")
+                    Text(text = coinListState.name)
 
-                    Text(text = "BTC")
+                    Text(text = coinListState.symbol)
                 }
             }
 
             Column(
                 horizontalAlignment = Alignment.End
             ) {
-                Text(text = "$56,671.41180")
+                Text(text = "$${coinListState.price}")
 
                 Row {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowUp,
                         contentDescription = null
                     )
-                    Text(text = "1.07")
+                    Text(text = coinListState.change)
                 }
             }
         }
@@ -88,6 +97,8 @@ fun CoinListCard(
 @Preview
 fun PreviewCoinListCard() {
     BusbyCoinsTheme {
-        CoinListCard()
+        CoinListCard(
+            coinListState = CoinListState()
+        )
     }
 }

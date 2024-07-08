@@ -12,11 +12,12 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
 import co.touchlab.kermit.Logger
 import me.androidbox.domain.coin_list.models.CoinModel
+import me.androidbox.presentation.coin_list.components.CoinListCard
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 
 @Composable
 fun CoinListScreen(
-    coinList: LazyPagingItems<CoinModel>,
+    coinList: LazyPagingItems<CoinListState>,
     modifier: Modifier = Modifier
 ) {
 
@@ -32,10 +33,10 @@ fun CoinListScreen(
 
             items(
                 count = coinList.itemCount) { index ->
-                coinList[index]?.let {
-                    Text(text = it.name, fontSize = 16.sp, color = Color.White)
+                coinList[index]?.let { coinListState ->
+                    CoinListCard(coinListState = coinListState)
                     Logger.d {
-                        it.name
+                        coinListState.name
                     }
                 }
             }

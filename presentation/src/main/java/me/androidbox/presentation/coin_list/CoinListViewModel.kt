@@ -2,26 +2,32 @@ package me.androidbox.presentation.coin_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import kotlinx.coroutines.flow.Flow
+import androidx.paging.map
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import me.androidbox.data.coin_list.repository.CoinListRepositoryImp
-import me.androidbox.domain.coin_list.models.CoinModel
 import me.androidbox.domain.coin_list.usecases.FetchCoinListUseCase
 
 class CoinListViewModel(
     private val fetchCoinListUseCase: FetchCoinListUseCase,
-    private val coinListRepositoryImp: CoinListRepositoryImp
+    coinListRepositoryImp: CoinListRepositoryImp
 ) : ViewModel() {
 
     val coinList = coinListRepositoryImp
         .getPagedCoinList()
+        .map { pagingData ->
+            pagingData.map { coinModel ->
+                CoinListState(
+                    imageUri = coinModel.iconUrl,
+                    name = coinModel.name,
+                    symbol = coinModel.symbol,
+                    price = coinModel.price,
+                    change = coinModel.change
+                )
+            }
+        }
         .cachedIn(viewModelScope)
-
-    init {
-       // fetchCoinList()
-    }
 
     fun fetchCoinList() {
         viewModelScope.launch {
