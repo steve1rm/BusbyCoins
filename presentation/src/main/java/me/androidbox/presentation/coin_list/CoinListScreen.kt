@@ -54,50 +54,66 @@ fun CoinListScreen(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background
     ) {  paddingValues ->
-        LazyColumn(
+        Box(
             modifier = Modifier.fillMaxSize()
-                .padding(horizontal = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = paddingValues
         ) {
-            item {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Start,
-                    text = "Buy, sell and hold crypto",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground)
-            }
 
-            item {
-                if(coinListPager.loadState.refresh is LoadState.Loading) {
-                    CircularProgressIndicator()
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+                    .padding(horizontal = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                contentPadding = paddingValues
+            ) {
+                item {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Start,
+                        text = "Buy, sell and hold crypto",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground)
                 }
-            }
 
-            items(
-                key = { coinListPager ->
-                    coinListPager
-                },
-                count = coinListPager.itemCount) { index ->
-                coinListPager[index]?.let { coinListState ->
-                    CoinListCard(
-                        coinListState = coinListState,
-                        onCardClicked = { uuid: String ->
-                            isBottomSheetOpen = true
-                            onCoinListAction(CoinListAction.CoinListCardClicked(uuid = uuid))
-                            Logger.d {
-                                "uuid: $uuid"
-                            }
-                        })
+                /** Top progress indicator */
+                item {
+                    if(coinListPager.loadState.refresh is LoadState.Loading) {
+                        CircularProgressIndicator()
+                    }
                 }
-            }
 
-            item {
-                if(coinListPager.loadState.append is LoadState.Loading) {
-                    CircularProgressIndicator()
+                item {
+                    if(coinListPager.loadState.refresh is LoadState.Error) {
+                        Text(text = "Could not load data")
+                        Text(text = "Please try again")
+                    }
+                }
+
+                items(
+                    key = { coinListPager ->
+                        coinListPager
+                    },
+                    count = coinListPager.itemCount) { index ->
+
+                    /** Insert the invite friend here by using multiples i.e. 5, 20, 40, */
+
+                    coinListPager[index]?.let { coinListState ->
+                        CoinListCard(
+                            coinListState = coinListState,
+                            onCardClicked = { uuid: String ->
+                                isBottomSheetOpen = true
+                                onCoinListAction(CoinListAction.CoinListCardClicked(uuid = uuid))
+                                Logger.d {
+                                    "uuid: $uuid"
+                                }
+                            })
+                    }
+                }
+
+                item {
+                    if(coinListPager.loadState.append is LoadState.Loading) {
+                        CircularProgressIndicator()
+                    }
                 }
             }
         }
