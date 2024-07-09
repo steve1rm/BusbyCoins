@@ -115,6 +115,13 @@ fun CoinListScreen(
                         CircularProgressIndicator()
                     }
                 }
+
+                item {
+                    if(coinListPager.loadState.append is LoadState.Error) {
+                        Text(text = "Could not load data")
+                        Text(text = "Please try again")
+                    }
+                }
             }
         }
     }
