@@ -23,6 +23,9 @@ data object CoinListScreenRoute : Screen {
             onCoinListAction = coinListViewModel::coinListAction,
             onOpenWebsiteClicked = { webUrl ->
                 urlHandler.openUri(webUrl)
+            },
+            onRetryClicked = {
+
             }
         )
     }

@@ -2,15 +2,14 @@
 
 package me.androidbox.presentation.coin_list
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -43,6 +42,7 @@ fun CoinListScreen(
     coinListState: CoinListState,
     onCoinListAction: (action: CoinListAction) -> Unit,
     onOpenWebsiteClicked: (webUrl: String) -> Unit,
+    onRetryClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState()
@@ -84,8 +84,19 @@ fun CoinListScreen(
 
                 item {
                     if(coinListPager.loadState.refresh is LoadState.Error) {
-                        Text(text = "Could not load data")
-                        Text(text = "Please try again")
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            text = "Could not load data")
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    onRetryClicked()
+                                },
+                            textAlign = TextAlign.Center,
+                            text = "Please try again")
                     }
                 }
 
@@ -118,8 +129,19 @@ fun CoinListScreen(
 
                 item {
                     if(coinListPager.loadState.append is LoadState.Error) {
-                        Text(text = "Could not load data")
-                        Text(text = "Please try again")
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            text = "Could not load data")
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    onRetryClicked()
+                                },
+                            textAlign = TextAlign.Center,
+                            text = "Please try again")
                     }
                 }
             }
