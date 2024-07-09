@@ -42,7 +42,6 @@ fun CoinListScreen(
     coinListState: CoinListState,
     onCoinListAction: (action: CoinListAction) -> Unit,
     onOpenWebsiteClicked: (webUrl: String) -> Unit,
-    onRetryClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState()
@@ -93,7 +92,7 @@ fun CoinListScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    onRetryClicked()
+                                    coinListPager.retry()
                                 },
                             textAlign = TextAlign.Center,
                             text = "Please try again")
@@ -138,7 +137,7 @@ fun CoinListScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    onRetryClicked()
+                                    coinListPager.retry()
                                 },
                             textAlign = TextAlign.Center,
                             text = "Please try again")
