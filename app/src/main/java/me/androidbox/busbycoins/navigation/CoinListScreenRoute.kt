@@ -14,9 +14,12 @@ data object CoinListScreenRoute : Screen {
     override fun Content() {
         val coinListViewModel = koinViewModel<CoinListViewModel>()
         val paging = coinListViewModel.coinList.collectAsLazyPagingItems()
+        val coinListState = coinListViewModel.coinDetailState
 
         CoinListScreen(
-            coinList = paging
+            coinList = paging,
+            coinListState = coinListState,
+            onCoinListAction = coinListViewModel::coinListAction
         )
     }
 }

@@ -3,7 +3,6 @@ package me.androidbox.data.coin_list.remote_data_source.imp
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
-import io.ktor.http.path
 import me.androidbox.data.BuildConfig
 import me.androidbox.data.coin_detail.dto.CoinDetailDto
 import me.androidbox.data.coin_list.dto.CoinListDto
@@ -37,10 +36,8 @@ class CoinListRemoteDataSourceImp(
         return safeResult
     }
 
-    override suspend fun fetchCoinDetail(): CheckResult<CoinDetailDto, DataError.Network, ErrorDto> {
+    override suspend fun fetchCoinDetail(uuid: String): CheckResult<CoinDetailDto, DataError.Network, ErrorDto> {
         val safeResult = safeApiRequest<CoinDetailDto> {
-            val uuid = "Qwsogvtv82FCd"
-
             val response = httpClient
                 .get(Routes.COIN + uuid) {
                     headers {

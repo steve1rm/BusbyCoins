@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CoinDetailDto(
-    val data: Data,
+    val data: DataDetailDto,
     val status: String
 )

@@ -24,17 +24,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            val coinListRemoteDataSourceImp = koinInject<CoinListRemoteDataSource>()
+          /*  val coinListRemoteDataSourceImp = koinInject<CoinListRemoteDataSource>()
 
             lifecycleScope.launch {
-                val result = coinListRemoteDataSourceImp.fetchCoinDetail()
+                val result = coinListRemoteDataSourceImp.fetchCoinDetail(uuid = "Qwsogvtv82FCd")
                 when(result) {
                     is CheckResult.Failure -> println(result.responseError)
                     is CheckResult.Success -> {
                         println(result.data)
                     }
                 }
-            }
+            }*/
 
             BusbyCoinsTheme {
                Navigator(screen = CoinListScreenRoute)
