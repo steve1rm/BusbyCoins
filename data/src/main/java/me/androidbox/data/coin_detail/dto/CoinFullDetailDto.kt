@@ -15,5 +15,6 @@ data class CoinFullDetailDto(
     val priceAt: Int,
     val symbol: String,
     val uuid: String,
-    val websiteUrl: String
+    val websiteUrl: String,
+    val color: String
 )

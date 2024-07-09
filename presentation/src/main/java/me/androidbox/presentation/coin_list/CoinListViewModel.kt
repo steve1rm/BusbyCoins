@@ -65,6 +65,7 @@ class CoinListViewModel(
                         change = checkResult.data.data.coin.change,
                         description = checkResult.data.data.coin.description,
                         websiteUrl = checkResult.data.data.coin.websiteUrl,
+                        color = checkResult.data.data.coin.color,
                         isLoading = false
                     )
                 }

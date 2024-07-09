@@ -60,7 +60,8 @@ fun CoinDetailDto.toCoinDetailModel(): CoinDetailModel {
                 price = this.data.coin.price,
                 description = this.data.coin.description,
                 websiteUrl = this.data.coin.websiteUrl,
-                priceAt = this.data.coin.priceAt)
+                priceAt = this.data.coin.priceAt,
+                color = this.data.coin.color)
         )
     )
 }

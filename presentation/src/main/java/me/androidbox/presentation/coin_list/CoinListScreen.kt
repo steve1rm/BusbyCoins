@@ -5,8 +5,10 @@ package me.androidbox.presentation.coin_list
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
 import co.touchlab.kermit.Logger
+import me.androidbox.presentation.coin_list.components.CoinDetailContent
 import me.androidbox.presentation.coin_list.components.CoinListCard
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 
@@ -81,25 +84,28 @@ fun CoinListScreen(
         }
 
         if(isBottomSheetOpen) {
-
             ModalBottomSheet(
                 sheetState = sheetState,
                 onDismissRequest = {
                     isBottomSheetOpen = false
-                }
+                },
+                dragHandle = null
             ) {
                 Box(modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center) {
                     if(coinListState.isLoading) {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(
+                            modifier = Modifier.padding(top = 24.dp, bottom = 24.dp)
+                        )
                     }
                     else {
                         Column(
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(text = coinListState.description)
+                            CoinDetailContent(
+                                coinListState = coinListState
+                            )
                         }
-
                     }
                 }
             }
