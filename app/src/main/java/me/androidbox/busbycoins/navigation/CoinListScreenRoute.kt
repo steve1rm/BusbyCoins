@@ -1,6 +1,7 @@
 package me.androidbox.busbycoins.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.paging.compose.collectAsLazyPagingItems
 import cafe.adriel.voyager.core.screen.Screen
 import me.androidbox.presentation.coin_list.CoinListScreen
@@ -14,11 +15,15 @@ data object CoinListScreenRoute : Screen {
         val coinListViewModel = koinViewModel<CoinListViewModel>()
         val paging = coinListViewModel.coinList.collectAsLazyPagingItems()
         val coinListState = coinListViewModel.coinDetailState
+        val urlHandler = LocalUriHandler.current
 
         CoinListScreen(
             coinList = paging,
             coinListState = coinListState,
-            onCoinListAction = coinListViewModel::coinListAction
+            onCoinListAction = coinListViewModel::coinListAction,
+            onOpenWebsiteClicked = { webUrl ->
+                urlHandler.openUri(webUrl)
+            }
         )
     }
 }

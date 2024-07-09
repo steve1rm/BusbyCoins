@@ -1,5 +1,6 @@
 package me.androidbox.presentation.coin_list.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,8 +25,9 @@ import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 
 @Composable
 fun CoinDetailContent(
+    coinListState: CoinListState,
+    onOpenWebsiteClicked: (webUrl: String) -> Unit,
     modifier: Modifier = Modifier,
-    coinListState: CoinListState
 ) {
     Column(
         modifier = modifier
@@ -72,10 +75,17 @@ fun CoinDetailContent(
 
         Text(text = coinListState.description)
 
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 1.dp)
+
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .clickable {
+                    onOpenWebsiteClicked(coinListState.websiteUrl)
+                },
             textAlign = TextAlign.Center,
             text = "go to website".uppercase())
     }
@@ -93,7 +103,8 @@ fun PreviewCoinDetailHeader() {
                 price = "54,6494.838",
                 marketCap = "$2.07 trillion",
                 description = "Bitcoin is a digital currency with a finite supply, allowing users to send/receive money without a central bank/government, often nicknamed \"Digital Gold\"."
-            )
+            ),
+            onOpenWebsiteClicked = {}
         )
     }
 }

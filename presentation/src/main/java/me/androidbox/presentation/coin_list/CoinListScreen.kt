@@ -5,10 +5,8 @@ package me.androidbox.presentation.coin_list
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
@@ -21,7 +19,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,10 +38,11 @@ fun CoinListScreen(
     coinList: LazyPagingItems<CoinListState>,
     coinListState: CoinListState,
     onCoinListAction: (action: CoinListAction) -> Unit,
+    onOpenWebsiteClicked: (webUrl: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState()
-    var isBottomSheetOpen by rememberSaveable {
+    var isBottomSheetOpen by remember {
         mutableStateOf(false)
     }
 
@@ -103,7 +102,12 @@ fun CoinListScreen(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             CoinDetailContent(
-                                coinListState = coinListState
+                                coinListState = coinListState,
+                                onOpenWebsiteClicked = { webSiteUrl ->
+                                    onOpenWebsiteClicked(webSiteUrl)
+                                    /** Do we close or leave it open to navigate back to, I think better to close */
+                                    isBottomSheetOpen = false
+                                }
                             )
                         }
                     }
