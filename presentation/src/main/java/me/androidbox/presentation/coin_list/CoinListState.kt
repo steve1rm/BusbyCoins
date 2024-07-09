@@ -9,5 +9,6 @@ data class CoinListState(
     val uuid: String = "",
     val description: String = "",
     val websiteUrl: String = "",
+    val marketCap: String = "",
     val isLoading: Boolean = false
 )
