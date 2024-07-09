@@ -5,5 +5,6 @@ data class CoinListState(
     val name: String = "",
     val symbol: String = "",
     val price: String = "",
-    val change: String = ""
+    val change: String = "",
+    val uuid: String = ""
 )

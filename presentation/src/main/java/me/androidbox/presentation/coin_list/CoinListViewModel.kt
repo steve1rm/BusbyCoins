@@ -23,7 +23,8 @@ class CoinListViewModel(
                     name = coinModel.name,
                     symbol = coinModel.symbol,
                     price = coinModel.price,
-                    change = coinModel.change
+                    change = coinModel.change,
+                    uuid = coinModel.uuid
                 )
             }
         }

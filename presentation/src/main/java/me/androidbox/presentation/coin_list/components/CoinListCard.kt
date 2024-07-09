@@ -1,5 +1,6 @@
 package me.androidbox.presentation.coin_list.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,7 +40,8 @@ import me.androidbox.presentation.utils.toFormattedPrice
 @Composable
 fun CoinListCard(
     coinListState: CoinListState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCardClicked: (uuid: String) -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(size = 8.dp),
@@ -49,6 +51,9 @@ fun CoinListCard(
         modifier = modifier
             .fillMaxWidth()
             .height(82.dp)
+            .clickable {
+                onCardClicked(coinListState.uuid)
+            }
     ) {
         Row(
             modifier = Modifier
@@ -147,7 +152,8 @@ fun PreviewCoinListCard() {
                 "BIT",
                 "45.5869",
                 "-5.0d"
-            )
+            ),
+            onCardClicked = {}
         )
     }
 }

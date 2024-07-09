@@ -1,13 +1,23 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package me.androidbox.presentation.coin_list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.text.font.FontWeight
@@ -15,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
+import co.touchlab.kermit.Logger
 import me.androidbox.presentation.coin_list.components.CoinListCard
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 
@@ -23,6 +34,10 @@ fun CoinListScreen(
     coinList: LazyPagingItems<CoinListState>,
     modifier: Modifier = Modifier
 ) {
+    val sheetState = rememberModalBottomSheetState()
+    var isBottomSheetOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -47,8 +62,26 @@ fun CoinListScreen(
                 },
                 count = coinList.itemCount) { index ->
                 coinList[index]?.let { coinListState ->
-                    CoinListCard(coinListState = coinListState)
+                    CoinListCard(
+                        coinListState = coinListState,
+                        onCardClicked = { uuid: String ->
+                            isBottomSheetOpen = true
+                            Logger.d {
+                                "uuid: $uuid"
+                            }
+                        })
                 }
+            }
+        }
+
+        if(isBottomSheetOpen) {
+            ModalBottomSheet(
+                sheetState = sheetState,
+                onDismissRequest = {
+                    isBottomSheetOpen = false
+                }
+            ) {
+                Text("This is the bottom sheet")
             }
         }
     }
@@ -58,6 +91,6 @@ fun CoinListScreen(
 @Preview
 fun PreviewCoinListScreen() {
    BusbyCoinsTheme {
-    //   CoinListScreen()
+      // CoinListScreen()
    }
 }
