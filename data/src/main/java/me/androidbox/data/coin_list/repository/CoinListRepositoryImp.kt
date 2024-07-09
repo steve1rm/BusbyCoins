@@ -8,9 +8,12 @@ import me.androidbox.data.coin_list.dto.CoinDto
 import me.androidbox.data.coin_list.mappers.toCoinListModel
 import me.androidbox.data.coin_list.pager.CoinListPager
 import me.androidbox.data.coin_list.remote_data_source.CoinListRemoteDataSource
+import me.androidbox.domain.coin_detail.CoinDetailModel
 import me.androidbox.domain.coin_list.models.CoinListModel
 import me.androidbox.domain.coin_list.models.CoinModel
-import me.androidbox.domain.coin_list.repository.CoinListRepository
+import me.androidbox.domain.coin_list.models.DataModel
+import me.androidbox.domain.coin_list.models.StatsModel
+import me.androidbox.domain.repository.CoinListRepository
 import me.androidbox.domain.utils.CheckResult
 import me.androidbox.domain.utils.DataError
 import me.androidbox.domain.utils.ErrorModel
@@ -35,6 +38,23 @@ class CoinListRepositoryImp(
                 CheckResult.Success(
                     data = apiResponse.data.toCoinListModel()
                 )
+            }
+        }
+    }
+
+    override suspend fun fetchCoinDetail(): CheckResult<CoinDetailModel, DataError.Network, ErrorModel> {
+        return when(val apiResponse = coinListRemoteDataSource.fetchCoinDetail()) {
+            is CheckResult.Failure -> {
+                CheckResult.Failure(
+                    exceptionError = apiResponse.exceptionError,
+                    responseError = ErrorModel(
+                        status = apiResponse.responseError?.status.orEmpty(),
+                        type = apiResponse.responseError?.type.orEmpty(),
+                        message = apiResponse.responseError?.message.orEmpty())
+                )
+            }
+            is CheckResult.Success -> {
+               TODO()
             }
         }
     }

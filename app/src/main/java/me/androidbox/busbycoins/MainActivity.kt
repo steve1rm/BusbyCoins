@@ -8,9 +8,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
 import cafe.adriel.voyager.navigator.Navigator
+import kotlinx.coroutines.launch
 import me.androidbox.busbycoins.navigation.CoinListScreenRoute
+import me.androidbox.data.coin_list.remote_data_source.CoinListRemoteDataSource
+import me.androidbox.domain.utils.CheckResult
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
+import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,17 +24,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-         /*   val coinListRemoteDataSourceImp = koinInject<CoinListRemoteDataSource>()
+            val coinListRemoteDataSourceImp = koinInject<CoinListRemoteDataSource>()
 
             lifecycleScope.launch {
-                val result = coinListRemoteDataSourceImp.fetchCoinList()
+                val result = coinListRemoteDataSourceImp.fetchCoinDetail()
                 when(result) {
                     is CheckResult.Failure -> println(result.responseError)
                     is CheckResult.Success -> {
                         println(result.data)
                     }
                 }
-            }*/
+            }
 
             BusbyCoinsTheme {
                Navigator(screen = CoinListScreenRoute)
