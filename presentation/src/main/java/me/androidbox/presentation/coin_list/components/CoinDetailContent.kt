@@ -11,13 +11,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import me.androidbox.presentation.coin_list.CoinListState
@@ -53,21 +57,39 @@ fun CoinDetailContent(
             Column {
                 Row {
                     Text(text = coinListState.name)
+
                     Spacer(modifier = Modifier.width(6.dp))
+
                     Text(text = "(${coinListState.symbol})")
                 }
                 Row {
-                    Text(text = "price".uppercase())
+                    Text(text = "price".uppercase(),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimary)
+
                     Spacer(modifier = Modifier.width(16.dp))
-                    Text(text = coinListState.price)
+
+                    Text(
+                        text = coinListState.price,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onPrimary)
                 }
 
                 Row {
-                    Text(text = "market cap".uppercase())
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Text(text = coinListState.marketCap)
-                }
+                    Text(text = "market cap".uppercase(),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimary)
 
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Text(text = coinListState.marketCap,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onPrimary)
+                }
             }
         }
 
@@ -86,8 +108,12 @@ fun CoinDetailContent(
                 .clickable {
                     onOpenWebsiteClicked(coinListState.websiteUrl)
                 },
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            text = "go to website".uppercase())
+            text = "go to website".uppercase(),
+            color = Color(0xFF38A0FF)
+        )
     }
 }
 
