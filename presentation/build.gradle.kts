@@ -34,6 +34,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.12"
@@ -47,6 +48,7 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":data"))
 
     implementation(libs.koin.core)
     implementation(libs.koin.android)
@@ -58,6 +60,9 @@ dependencies {
     implementation(libs.voyager.transitions)
     implementation(libs.coil.gif)
     implementation(libs.coil.compose)
+    implementation(libs.kermit)
+    implementation(libs.androidx.paging.compose)
+    implementation("androidx.paging:paging-runtime-ktx:3.3.0")
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
