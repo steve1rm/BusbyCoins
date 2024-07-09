@@ -1,6 +1,10 @@
 package me.androidbox.data.coin_list.mappers
 
+import me.androidbox.data.coin_detail.dto.CoinDetailDto
 import me.androidbox.data.coin_list.dto.CoinListDto
+import me.androidbox.domain.coin_detail.models.CoinDetailModel
+import me.androidbox.domain.coin_detail.models.CoinFullDetailModel
+import me.androidbox.domain.coin_detail.models.DataDetailModel
 import me.androidbox.domain.coin_list.models.CoinListModel
 import me.androidbox.domain.coin_list.models.CoinModel
 import me.androidbox.domain.coin_list.models.DataModel
@@ -37,6 +41,27 @@ fun CoinListDto.toCoinListModel(): CoinListModel {
                     price = coinDto.price,
                     sparkline = coinDto.sparkline.mapNotNull { it })
             }
+        )
+    )
+}
+
+fun CoinDetailDto.toCoinDetailModel(): CoinDetailModel {
+    return CoinDetailModel(
+        status = this.status,
+        data = DataDetailModel(
+            coin = CoinFullDetailModel(
+                name = this.data.coin.name,
+                uuid = this.data.coin.uuid,
+                btcPrice = this.data.coin.btcPrice,
+                change = this.data.coin.change,
+                iconUrl = this.data.coin.iconUrl,
+                marketCap = this.data.coin.marketCap,
+                symbol = this.data.coin.symbol,
+                price = this.data.coin.price,
+                description = this.data.coin.description,
+                websiteUrl = this.data.coin.websiteUrl,
+                priceAt = this.data.coin.priceAt,
+                color = this.data.coin.color)
         )
     )
 }

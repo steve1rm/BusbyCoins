@@ -5,5 +5,11 @@ data class CoinListState(
     val name: String = "",
     val symbol: String = "",
     val price: String = "",
-    val change: String = ""
+    val change: String = "",
+    val uuid: String = "",
+    val description: String = "",
+    val websiteUrl: String = "",
+    val marketCap: String = "",
+    val color: String = "",
+    val isLoading: Boolean = false
 )
