@@ -8,5 +8,6 @@ data class CoinListState(
     val change: String = "",
     val uuid: String = "",
     val description: String = "",
-    val websiteUrl: String = ""
+    val websiteUrl: String = "",
+    val isLoading: Boolean = false
 )

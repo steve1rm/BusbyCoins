@@ -47,10 +47,13 @@ class CoinListViewModel(
 
     private fun fetchCoinDetail(uuid: String) {
         viewModelScope.launch {
+            coinDetailState = coinDetailState.copy(isLoading = true)
+
             val checkResult = fetchCoinDetailUseCase.execute(uuid = uuid)
 
             when(checkResult) {
                 is CheckResult.Failure -> {
+                    coinDetailState = coinDetailState.copy(isLoading = true)
                     /** Show error */
                 }
                 is CheckResult.Success -> {
@@ -61,7 +64,8 @@ class CoinListViewModel(
                         price = checkResult.data.data.coin.price,
                         change = checkResult.data.data.coin.change,
                         description = checkResult.data.data.coin.description,
-                        websiteUrl = checkResult.data.data.coin.websiteUrl
+                        websiteUrl = checkResult.data.data.coin.websiteUrl,
+                        isLoading = false
                     )
                 }
             }

@@ -7,7 +7,6 @@ import me.androidbox.presentation.coin_list.CoinListScreen
 import me.androidbox.presentation.coin_list.CoinListViewModel
 import org.koin.androidx.compose.koinViewModel
 
-
 data object CoinListScreenRoute : Screen {
 
     @Composable
