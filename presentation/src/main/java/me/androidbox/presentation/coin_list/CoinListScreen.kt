@@ -2,15 +2,15 @@
 
 package me.androidbox.presentation.coin_list
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -26,9 +26,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import co.touchlab.kermit.Logger
 import me.androidbox.presentation.coin_list.components.CoinDetailContent
@@ -37,7 +39,7 @@ import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 
 @Composable
 fun CoinListScreen(
-    coinList: LazyPagingItems<CoinListState>,
+    coinListPager: LazyPagingItems<CoinListState>,
     coinListState: CoinListState,
     onCoinListAction: (action: CoinListAction) -> Unit,
     onOpenWebsiteClicked: (webUrl: String) -> Unit,
@@ -56,21 +58,31 @@ fun CoinListScreen(
             modifier = Modifier.fillMaxSize()
                 .padding(horizontal = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = paddingValues
         ) {
             item {
-                Text(text = "Buy, sell and hold crypto",
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Start,
+                    text = "Buy, sell and hold crypto",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground)
             }
 
+            item {
+                if(coinListPager.loadState.refresh is LoadState.Loading) {
+                    CircularProgressIndicator()
+                }
+            }
+
             items(
-                key = {
-                    it
+                key = { coinListPager ->
+                    coinListPager
                 },
-                count = coinList.itemCount) { index ->
-                coinList[index]?.let { coinListState ->
+                count = coinListPager.itemCount) { index ->
+                coinListPager[index]?.let { coinListState ->
                     CoinListCard(
                         coinListState = coinListState,
                         onCardClicked = { uuid: String ->
@@ -82,18 +94,25 @@ fun CoinListScreen(
                         })
                 }
             }
-        }
 
-        if(isBottomSheetOpen) {
-            ModalBottomSheet(
-                sheetState = sheetState,
-                onDismissRequest = {
-                    isBottomSheetOpen = false
-                },
-                dragHandle = null,
-                containerColor = MaterialTheme.colorScheme.background
-            ) {
-                Box(modifier = Modifier.fillMaxWidth(),
+            item {
+                if(coinListPager.loadState.append is LoadState.Loading) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+    }
+
+    if(isBottomSheetOpen) {
+        ModalBottomSheet(
+            sheetState = sheetState,
+            onDismissRequest = {
+                isBottomSheetOpen = false
+            },
+            dragHandle = null,
+            containerColor = MaterialTheme.colorScheme.background
+        ) {
+            Box(modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center) {
                     if(coinListState.isLoading) {
                         CircularProgressIndicator(
@@ -118,7 +137,7 @@ fun CoinListScreen(
             }
         }
     }
-}
+
 
 @Composable
 @Preview

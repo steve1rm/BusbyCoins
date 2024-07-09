@@ -18,7 +18,7 @@ data object CoinListScreenRoute : Screen {
         val urlHandler = LocalUriHandler.current
 
         CoinListScreen(
-            coinList = paging,
+            coinListPager = paging,
             coinListState = coinListState,
             onCoinListAction = coinListViewModel::coinListAction,
             onOpenWebsiteClicked = { webUrl ->
