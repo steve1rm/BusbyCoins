@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -87,6 +88,9 @@ fun CoinListScreen(
                             modifier = Modifier
                                 .fillMaxWidth(),
                             textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Normal,
                             text = "Could not load data")
                         Text(
                             modifier = Modifier
@@ -95,6 +99,9 @@ fun CoinListScreen(
                                     coinListPager.retry()
                                 },
                             textAlign = TextAlign.Center,
+                            color = Color(0xFF38A0FF),
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
                             text = "Please try again")
                     }
                 }
@@ -132,6 +139,9 @@ fun CoinListScreen(
                             modifier = Modifier
                                 .fillMaxWidth(),
                             textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Normal,
                             text = "Could not load data")
                         Text(
                             modifier = Modifier
@@ -140,6 +150,9 @@ fun CoinListScreen(
                                     coinListPager.retry()
                                 },
                             textAlign = TextAlign.Center,
+                            color = Color(0xFF38A0FF),
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
                             text = "Please try again")
                     }
                 }
