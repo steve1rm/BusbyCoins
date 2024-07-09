@@ -16,6 +16,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,12 +53,16 @@ fun CoinListScreen(
         mutableStateOf(false)
     }
 
+    val pullToRefreshState = rememberPullToRefreshState()
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background
     ) {  paddingValues ->
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .nestedScroll(pullToRefreshState.nestedScrollConnection)
         ) {
 
             LazyColumn(
@@ -77,10 +84,14 @@ fun CoinListScreen(
 
                 /** Top progress indicator */
                 item {
-                    if(coinListPager.loadState.refresh is LoadState.Loading) {
-                        CircularProgressIndicator()
+                        if(coinListPager.loadState.refresh is LoadState.Loading) {
+                            CircularProgressIndicator()
+                            if(pullToRefreshState.isRefreshing) {
+                                pullToRefreshState.endRefresh()
+                            }
+                        }
                     }
-                }
+
 
                 item {
                     if(coinListPager.loadState.refresh is LoadState.Error) {
@@ -157,6 +168,15 @@ fun CoinListScreen(
                     }
                 }
             }
+
+            if(pullToRefreshState.isRefreshing) {
+                coinListPager.refresh()
+            }
+
+            PullToRefreshContainer(
+                state = pullToRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
         }
     }
 

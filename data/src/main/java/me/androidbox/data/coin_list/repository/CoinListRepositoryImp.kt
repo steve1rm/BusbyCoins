@@ -63,7 +63,7 @@ class CoinListRepositoryImp(
         return Pager(
             config = PagingConfig(pageSize = 20, enablePlaceholders = false),
             pagingSourceFactory = {
-                coinListPager
+                CoinListPager(coinListRemoteDataSource)
             }
         ).flow
     }
