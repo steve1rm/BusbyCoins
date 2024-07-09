@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import androidx.paging.map
-import kotlinx.coroutines.flow.Flow
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import me.androidbox.data.coin_list.repository.CoinListRepositoryImp
@@ -25,10 +25,18 @@ class CoinListViewModel(
     var coinDetailState by mutableStateOf(CoinListState())
         private set
 
+    var coinTopRankedState by mutableStateOf(listOf(CoinListState()))
+        private set
+
     val coinList = coinListRepositoryImp
         .getPagedCoinList()
         .map { pagingData ->
-            pagingData.map { coinModel ->
+            pagingData
+                .filter { coinModel ->
+                    /** Filter out the first 3 top rankings */
+                    coinModel.rank > 3
+                }
+                .map { coinModel ->
                 CoinListState(
                     imageUri = coinModel.iconUrl,
                     name = coinModel.name,
@@ -41,9 +49,37 @@ class CoinListViewModel(
         }
         .cachedIn(viewModelScope)
 
-    fun fetchCoinList() {
+    init {
+        fetchCoinList()
+    }
+
+    private fun fetchCoinList() {
         viewModelScope.launch {
-            fetchCoinListUseCase.execute()
+            coinDetailState = coinDetailState.copy(isLoading = true)
+
+            val checkResult = fetchCoinListUseCase.execute(offset = 0, limit = 3)
+
+            when(checkResult) {
+                is CheckResult.Failure -> {
+                    coinDetailState = coinDetailState.copy(isLoading = false)
+                }
+                is CheckResult.Success -> {
+                    coinDetailState = coinDetailState.copy(isLoading = false)
+
+                    val listOfCoins = checkResult.data.data.coins.map { coinModel ->
+                        CoinListState(
+                            imageUri = coinModel.iconUrl,
+                            name = coinModel.name,
+                            symbol = coinModel.symbol,
+                            change = coinModel.change
+                        )
+                    }
+                    coinTopRankedState = listOfCoins
+                    Logger.d {
+                        "${coinTopRankedState.count()}"
+                    }
+                }
+            }
         }
     }
 

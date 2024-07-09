@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +46,7 @@ import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 fun CoinListScreen(
     coinListPager: LazyPagingItems<CoinListState>,
     coinListState: CoinListState,
+    coinTopRankedState: List<CoinListState>,
     onCoinListAction: (action: CoinListAction) -> Unit,
     onOpenWebsiteClicked: (webUrl: String) -> Unit,
     modifier: Modifier = Modifier
@@ -80,6 +83,21 @@ fun CoinListScreen(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground)
+                }
+
+                item {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(
+                            items = coinTopRankedState
+                        ) { coin ->
+                            Text(text = coin.name)
+                            Logger.d {
+                                "COINLISTSCREEN ${coin.name}"
+                            }
+                        }
+                    }
                 }
 
                 /** Top progress indicator */
@@ -123,7 +141,7 @@ fun CoinListScreen(
                     },
                     count = coinListPager.itemCount) { index ->
 
-                    /** Insert the invite friend here by using multiples i.e. 5, 20, 40, */
+                    /** Insert the invite friend here by using multiples i.e. 5, 10,  20, 40, 80, 160 */
 
                     coinListPager[index]?.let { coinListState ->
                         CoinListCard(

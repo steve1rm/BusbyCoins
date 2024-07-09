@@ -11,7 +11,7 @@ class FetchCoinListUseCaseImp(
     private val coinListRepository: CoinListRepository
 ) : FetchCoinListUseCase {
 
-    override suspend fun execute(): CheckResult<CoinListModel, DataError.Network, ErrorModel> {
-        return coinListRepository.fetchCoinList()
+    override suspend fun execute(offset: Int, limit: Int): CheckResult<CoinListModel, DataError.Network, ErrorModel> {
+        return coinListRepository.fetchCoinList(offset, limit)
     }
 }
