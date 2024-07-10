@@ -8,7 +8,8 @@ import me.androidbox.domain.coin_list.models.CoinModel
 import me.androidbox.domain.utils.CheckResult
 
 class CoinListPager(
-    private val coinListRemoteDataSource: CoinListRemoteDataSource
+    private val coinListRemoteDataSource: CoinListRemoteDataSource,
+    private val searchTerm: String = "",
 ) : PagingSource<Int, CoinModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, CoinModel>): Int? {
@@ -26,7 +27,7 @@ class CoinListPager(
         val position = params.key ?: 1
         val offset = (position - 1) * 20
 
-       when(val response = coinListRemoteDataSource.fetchCoinList(offset)) {
+       when(val response = coinListRemoteDataSource.fetchCoinList(offset = offset, searchTerm = searchTerm)) {
             is CheckResult.Failure -> {
                 return LoadResult.Error(Throwable(message = response.exceptionError.toString()))
             }

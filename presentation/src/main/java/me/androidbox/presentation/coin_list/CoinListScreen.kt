@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -47,6 +46,7 @@ import me.androidbox.presentation.coin_list.components.CoinDetailContent
 import me.androidbox.presentation.coin_list.components.CoinDetailVerticalCard
 import me.androidbox.presentation.coin_list.components.CoinListCard
 import me.androidbox.presentation.coin_list.components.InviteFriendCard
+import me.androidbox.presentation.coin_list.components.TopBarSearch
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 
 @Composable
@@ -65,10 +65,26 @@ fun CoinListScreen(
 
     val pullToRefreshState = rememberPullToRefreshState()
     val rememberWindowInfo = rememberWindowInfo()
+    var text by remember { mutableStateOf("") }
+    var active by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            TopBarSearch(
+                search = text,
+                onValueChange = { searchTerm ->
+                    text = searchTerm
+                    onCoinListAction(CoinListAction.SearchTermInput(text))
+                    Logger.d {
+                        "search term $text"
+                    }
+                },
+                onCloseIconClicked = {
+                    text = ""
+                })
+        }
     ) {  paddingValues ->
         Box(
             modifier = Modifier
@@ -85,28 +101,31 @@ fun CoinListScreen(
                     contentPadding = paddingValues
                 ) {
 
-                    item {
-                        Spacer(modifier = Modifier.height(8.dp))
+                    if(text.isBlank()) {
+                        item {
+                            Spacer(modifier = Modifier.height(8.dp))
 
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Start,
-                            text = "Top 3 rank crypto",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground)
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Start,
+                                text = "Top 3 rank crypto",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(8.dp))
 
-                        LazyRow(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            items(
-                                items = coinTopRankedState
-                            ) { coin ->
-                                CoinDetailVerticalCard(coin) {
-                                    /** no-op */
+                            LazyRow(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                items(
+                                    items = coinTopRankedState
+                                ) { coin ->
+                                    CoinDetailVerticalCard(coin) {
+                                        /** no-op */
+                                    }
                                 }
                             }
                         }
