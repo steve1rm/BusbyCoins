@@ -8,13 +8,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +23,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +37,9 @@ fun InviteFriendCard(
 ) {
     Card(
         shape = RoundedCornerShape(size = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFC5E6FF)
+        ),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 2.dp
         ),
@@ -59,6 +60,7 @@ fun InviteFriendCard(
         ) {
 
             Image(
+                modifier = Modifier.size(22.dp),
                 painter = painterResource(R.drawable.invite),
                 contentDescription = null
             )
@@ -83,10 +85,12 @@ private fun buildDescriptionAnnotatedString(): AnnotatedString {
     val annotatedString = buildAnnotatedString {
         this.withStyle(
             SpanStyle(
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal,
+                color = Color(0xFF000000)
             )
         ) {
-            this.append("You can earn $10 when you invite a friend to by crypto")
+            this.append("You can earn $10 when you invite a friend to by crypto.")
             this.append(" ")
         }
 
@@ -97,6 +101,7 @@ private fun buildDescriptionAnnotatedString(): AnnotatedString {
 
         this.withStyle(
             SpanStyle(
+                fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color(0xFF38A0FF)
             )
