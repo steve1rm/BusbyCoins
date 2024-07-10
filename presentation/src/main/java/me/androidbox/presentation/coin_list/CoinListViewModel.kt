@@ -21,7 +21,7 @@ import me.androidbox.domain.utils.CheckResult
 class CoinListViewModel(
     private val fetchCoinListUseCase: FetchCoinListUseCase,
     private val fetchCoinDetailUseCase: FetchCoinDetailUseCase,
-    coinListRepositoryImp: CoinListRepositoryImp
+    private val coinListRepositoryImp: CoinListRepositoryImp
 ) : ViewModel() {
 
     var coinDetailState by mutableStateOf(CoinListState())
@@ -30,13 +30,16 @@ class CoinListViewModel(
     var coinTopRankedState by mutableStateOf(listOf(CoinListState()))
         private set
 
-    var coinList: Flow<PagingData<CoinListState>>
+    lateinit var coinList: Flow<PagingData<CoinListState>>
 
     init {
         fetchCoinList(limit = 3)
+        fetchNewSearchPaging("")
+    }
 
+    private fun fetchNewSearchPaging(searchTerm: String) {
         coinList = coinListRepositoryImp
-            .getPagedCoinList()
+            .getPagedCoinList(searchTerm)
             .map { pagingData ->
                 pagingData
                     .filter { coinModel ->
