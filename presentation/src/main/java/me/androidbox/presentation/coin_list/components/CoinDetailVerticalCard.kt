@@ -49,8 +49,8 @@ fun CoinDetailVerticalCard(
             defaultElevation = 2.dp
         ),
         modifier = modifier
-            .height(160.dp)
-            .width(120.dp)
+            .height(140.dp)
+            .width(110.dp)
             .clickable {
                 onCardClicked(coinListState.uuid)
             }
@@ -58,8 +58,9 @@ fun CoinDetailVerticalCard(
         Column(
             modifier = Modifier
                 .fillMaxHeight()
+                .padding(top = 8.dp, bottom = 8.dp)
                 .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 

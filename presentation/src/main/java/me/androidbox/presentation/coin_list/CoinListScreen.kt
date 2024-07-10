@@ -78,17 +78,16 @@ fun CoinListScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 contentPadding = paddingValues
             ) {
+
                 item {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Start,
-                        text = "Buy, sell and hold crypto",
+                        text = "Top 3 rank crypto",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground)
-                }
 
-                item {
                     LazyRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -137,6 +136,16 @@ fun CoinListScreen(
                             fontWeight = FontWeight.Bold,
                             text = "Please try again")
                     }
+                }
+
+                item {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Start,
+                        text = "Buy, sell and hold crypto",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground)
                 }
 
                 items(
