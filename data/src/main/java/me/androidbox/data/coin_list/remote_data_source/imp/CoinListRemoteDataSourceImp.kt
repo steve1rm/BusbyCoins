@@ -16,7 +16,7 @@ import me.androidbox.domain.utils.DataError
 class CoinListRemoteDataSourceImp(
     private val httpClient: HttpClient,
 ) : CoinListRemoteDataSource {
-    override suspend fun fetchCoinList(offSet: Int, limit: Int): CheckResult<CoinListDto, DataError.Network, ErrorDto> {
+    override suspend fun fetchCoinList(offSet: Int, limit: Int, searchTerm: String): CheckResult<CoinListDto, DataError.Network, ErrorDto> {
         val safeResult = safeApiRequest<CoinListDto> {
 
             val response = httpClient
@@ -24,6 +24,7 @@ class CoinListRemoteDataSourceImp(
                     url {
                         this.parameters.append("offset", offSet.toString())
                         this.parameters.append("limit", limit.toString())
+                        this.parameters.append("search", "bitmex")
                     }
                     headers {
                         this.append("x-access-token", BuildConfig.COIN_RANKING_API_KEY)
