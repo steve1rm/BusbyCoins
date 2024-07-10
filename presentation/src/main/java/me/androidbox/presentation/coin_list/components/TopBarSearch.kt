@@ -40,12 +40,13 @@ fun TopBarSearch(
     ) {
         TextField(
             modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 disabledTextColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
             ),
+            maxLines = 1,
             value = search,
             onValueChange = onValueChange,
             leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "search") },
