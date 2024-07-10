@@ -5,10 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.paging.map
 import co.touchlab.kermit.Logger
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import me.androidbox.data.coin_list.repository.CoinListRepositoryImp
@@ -28,36 +30,39 @@ class CoinListViewModel(
     var coinTopRankedState by mutableStateOf(listOf(CoinListState()))
         private set
 
-    val coinList = coinListRepositoryImp
-        .getPagedCoinList("bitmex")
-        .map { pagingData ->
-            pagingData
-                .filter { coinModel ->
-                    /** Filter out the first 3 top rankings */
-                    coinModel.rank > 3
-                }
-                .map { coinModel ->
-                CoinListState(
-                    imageUri = coinModel.iconUrl,
-                    name = coinModel.name,
-                    symbol = coinModel.symbol,
-                    price = coinModel.price,
-                    change = coinModel.change,
-                    uuid = coinModel.uuid
-                )
-            }
-        }
-        .cachedIn(viewModelScope)
+    var coinList: Flow<PagingData<CoinListState>>
 
     init {
-        fetchCoinList()
+        fetchCoinList(limit = 3)
+
+        coinList = coinListRepositoryImp
+            .getPagedCoinList()
+            .map { pagingData ->
+                pagingData
+                    .filter { coinModel ->
+                        /** Filter out the first 3 top rankings */
+                        coinModel.rank > 3
+                    }
+                    .map { coinModel ->
+                        CoinListState(
+                            imageUri = coinModel.iconUrl,
+                            name = coinModel.name,
+                            symbol = coinModel.symbol,
+                            price = coinModel.price,
+                            change = coinModel.change,
+                            uuid = coinModel.uuid
+                        )
+                    }
+            }
+            .cachedIn(viewModelScope)
     }
 
-    private fun fetchCoinList() {
+    /** The number of items you want to return, in this case the top ranked 3 items */
+    private fun fetchCoinList(limit: Int) {
         viewModelScope.launch {
             coinDetailState = coinDetailState.copy(isLoading = true)
 
-            val checkResult = fetchCoinListUseCase.execute(offset = 0, limit = 3)
+            val checkResult = fetchCoinListUseCase.execute(offset = 0, limit = limit)
 
             when(checkResult) {
                 is CheckResult.Failure -> {

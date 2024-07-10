@@ -58,7 +58,7 @@ class CoinListRepositoryImp(
         }
     }
 
-    fun getPagedCoinList(searchTerm: String): Flow<PagingData<CoinModel>> {
+    fun getPagedCoinList(searchTerm: String = ""): Flow<PagingData<CoinModel>> {
         return Pager(
             config = PagingConfig(pageSize = 20, enablePlaceholders = false),
             pagingSourceFactory = {
