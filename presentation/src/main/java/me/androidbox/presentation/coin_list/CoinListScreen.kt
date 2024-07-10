@@ -6,13 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -110,13 +108,13 @@ fun CoinListScreen(
 
                 /** Top progress indicator */
                 item {
-                        if(coinListPager.loadState.refresh is LoadState.Loading) {
-                            CircularProgressIndicator()
-                            if(pullToRefreshState.isRefreshing) {
-                                pullToRefreshState.endRefresh()
-                            }
+                    if(coinListPager.loadState.refresh is LoadState.Loading) {
+                        CircularProgressIndicator()
+                        if(pullToRefreshState.isRefreshing) {
+                            pullToRefreshState.endRefresh()
                         }
                     }
+                }
 
 
                 item {
@@ -160,6 +158,9 @@ fun CoinListScreen(
                     count = coinListPager.itemCount) { index ->
 
                     /** Insert the invite friend here by using multiples i.e. 5, 10,  20, 40, 80, 160 */
+                    if(isInvitePosition(index)) {
+                        Text("Invite a friend at index $index", fontSize = 24.sp)
+                    }
 
                     coinListPager[index]?.let { coinListState ->
                         CoinListCard(
@@ -226,36 +227,41 @@ fun CoinListScreen(
             containerColor = MaterialTheme.colorScheme.background
         ) {
             Box(modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center) {
-                    if(coinListState.isLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.padding(top = 24.dp, bottom = 24.dp)
+                contentAlignment = Alignment.Center) {
+                if(coinListState.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.padding(top = 24.dp, bottom = 24.dp)
+                    )
+                }
+                else {
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        CoinDetailContent(
+                            coinListState = coinListState,
+                            onOpenWebsiteClicked = { webSiteUrl ->
+                                onOpenWebsiteClicked(webSiteUrl)
+                                /** Do we close or leave it open to navigate back to, I think better to close */
+                                isBottomSheetOpen = false
+                            }
                         )
-                    }
-                    else {
-                        Column(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            CoinDetailContent(
-                                coinListState = coinListState,
-                                onOpenWebsiteClicked = { webSiteUrl ->
-                                    onOpenWebsiteClicked(webSiteUrl)
-                                    /** Do we close or leave it open to navigate back to, I think better to close */
-                                    isBottomSheetOpen = false
-                                }
-                            )
-                        }
                     }
                 }
             }
         }
     }
+}
 
+fun isInvitePosition(index: Int): Boolean {
+    if (index < 5) return false
+    val n = (index / 5)
+    return index % 5 == 0 && (n and (n - 1)) == 0
+}
 
 @Composable
 @Preview
 fun PreviewCoinListScreen() {
-   BusbyCoinsTheme {
-      // CoinListScreen()
-   }
+    BusbyCoinsTheme {
+        // CoinListScreen()
+    }
 }
