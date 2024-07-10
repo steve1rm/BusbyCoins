@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -80,6 +82,8 @@ fun CoinListScreen(
             ) {
 
                 item {
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Start,
@@ -88,6 +92,8 @@ fun CoinListScreen(
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground)
 
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     LazyRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -95,9 +101,8 @@ fun CoinListScreen(
                         items(
                             items = coinTopRankedState
                         ) { coin ->
-                            CoinDetailVerticalCard(coin) { }
-                            Logger.d {
-                                "COINLISTSCREEN ${coin.name}"
+                            CoinDetailVerticalCard(coin) {
+                                /** no-op */
                             }
                         }
                     }
