@@ -7,12 +7,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,6 +64,7 @@ fun CoinListScreen(
     }
 
     val pullToRefreshState = rememberPullToRefreshState()
+    val rememberWindowInfo = rememberWindowInfo()
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -72,140 +76,297 @@ fun CoinListScreen(
                 .nestedScroll(pullToRefreshState.nestedScrollConnection)
         ) {
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-                    .padding(horizontal = 10.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                contentPadding = paddingValues
-            ) {
+            if (rememberWindowInfo.screenWidthInfo is WindowInfo.WindowType.Compact) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                        .padding(horizontal = 10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    contentPadding = paddingValues
+                ) {
 
-                item {
-                    Spacer(modifier = Modifier.height(8.dp))
+                    item {
+                        Spacer(modifier = Modifier.height(8.dp))
 
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Start,
-                        text = "Top 3 rank crypto",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground)
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Start,
+                            text = "Top 3 rank crypto",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground)
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
 
-                    LazyRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        items(
-                            items = coinTopRankedState
-                        ) { coin ->
-                            CoinDetailVerticalCard(coin) {
-                                /** no-op */
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            items(
+                                items = coinTopRankedState
+                            ) { coin ->
+                                CoinDetailVerticalCard(coin) {
+                                    /** no-op */
+                                }
                             }
                         }
                     }
-                }
 
-                /** Top progress indicator */
-                item {
-                    if(coinListPager.loadState.refresh is LoadState.Loading) {
-                        CircularProgressIndicator()
-                        if(pullToRefreshState.isRefreshing) {
-                            pullToRefreshState.endRefresh()
+                    /** Top progress indicator */
+                    item {
+                        if(coinListPager.loadState.refresh is LoadState.Loading) {
+                            CircularProgressIndicator()
+                            if(pullToRefreshState.isRefreshing) {
+                                pullToRefreshState.endRefresh()
+                            }
                         }
                     }
-                }
 
 
-                item {
-                    if(coinListPager.loadState.refresh is LoadState.Error) {
+                    item {
+                        if(coinListPager.loadState.refresh is LoadState.Error) {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Normal,
+                                text = "Could not load data")
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        coinListPager.retry()
+                                    },
+                                textAlign = TextAlign.Center,
+                                color = Color(0xFF38A0FF),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                text = "Please try again")
+                        }
+                    }
+
+                    item {
                         Text(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Start,
+                            text = "Buy, sell and hold crypto",
                             fontSize = 16.sp,
-                            fontWeight = FontWeight.Normal,
-                            text = "Could not load data")
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    coinListPager.retry()
-                                },
-                            textAlign = TextAlign.Center,
-                            color = Color(0xFF38A0FF),
-                            fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            text = "Please try again")
+                            color = MaterialTheme.colorScheme.onBackground)
+                    }
+
+                    items(
+                        key = { coinListPager ->
+                            coinListPager
+                        },
+                        count = coinListPager.itemCount) { index ->
+
+                        /** Insert the invite friend here by using multiples i.e. 5, 10,  20, 40, 80, 160 */
+                        if(isInvitePosition(index + 1)) {
+                            InviteFriendCard { webUrl ->
+                                onOpenWebsiteClicked(webUrl)
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+
+                        coinListPager[index]?.let { coinListState ->
+                            CoinListCard(
+                                coinListState = coinListState,
+                                onCardClicked = { uuid: String ->
+                                    isBottomSheetOpen = true
+                                    onCoinListAction(CoinListAction.CoinListCardClicked(uuid = uuid))
+                                    Logger.d {
+                                        "uuid: $uuid"
+                                    }
+                                })
+                        }
+                    }
+
+                    item {
+                        if(coinListPager.loadState.append is LoadState.Loading) {
+                            CircularProgressIndicator()
+                        }
+                    }
+
+                    item {
+                        if(coinListPager.loadState.append is LoadState.Error) {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Normal,
+                                text = "Could not load data")
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        coinListPager.retry()
+                                    },
+                                textAlign = TextAlign.Center,
+                                color = Color(0xFF38A0FF),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                text = "Please try again")
+                        }
                     }
                 }
+            }
+            else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                        .padding(horizontal = 10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    contentPadding = paddingValues
+                ) {
 
-                item {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Start,
-                        text = "Buy, sell and hold crypto",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground)
-                }
-
-                items(
-                    key = { coinListPager ->
-                        coinListPager
-                    },
-                    count = coinListPager.itemCount) { index ->
-
-                    /** Insert the invite friend here by using multiples i.e. 5, 10,  20, 40, 80, 160 */
-                    if(isInvitePosition(index + 1)) {
-                        InviteFriendCard { webUrl ->
-                            onOpenWebsiteClicked(webUrl)
-                        }
+                    item {
                         Spacer(modifier = Modifier.height(8.dp))
-                    }
 
-                    coinListPager[index]?.let { coinListState ->
-                        CoinListCard(
-                            coinListState = coinListState,
-                            onCardClicked = { uuid: String ->
-                                isBottomSheetOpen = true
-                                onCoinListAction(CoinListAction.CoinListCardClicked(uuid = uuid))
-                                Logger.d {
-                                    "uuid: $uuid"
-                                }
-                            })
-                    }
-                }
-
-                item {
-                    if(coinListPager.loadState.append is LoadState.Loading) {
-                        CircularProgressIndicator()
-                    }
-                }
-
-                item {
-                    if(coinListPager.loadState.append is LoadState.Error) {
                         Text(
-                            modifier = Modifier
-                                .fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onPrimary,
+                            text = "Top 3 rank crypto",
                             fontSize = 16.sp,
-                            fontWeight = FontWeight.Normal,
-                            text = "Could not load data")
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    coinListPager.retry()
-                                },
-                            textAlign = TextAlign.Center,
-                            color = Color(0xFF38A0FF),
-                            fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            text = "Please try again")
+                            color = MaterialTheme.colorScheme.onBackground)
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+                        ) {
+                            items(
+                                items = coinTopRankedState
+                            ) { coin ->
+                                CoinDetailVerticalCard(coin) {
+                                    /** no-op */
+                                }
+                            }
+                        }
+                    }
+
+                    /** Top progress indicator */
+                    item {
+                        if(coinListPager.loadState.refresh is LoadState.Loading) {
+                            CircularProgressIndicator()
+                            if(pullToRefreshState.isRefreshing) {
+                                pullToRefreshState.endRefresh()
+                            }
+                        }
+                    }
+
+                    item {
+                        if(coinListPager.loadState.refresh is LoadState.Error) {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Normal,
+                                text = "Could not load data")
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        coinListPager.retry()
+                                    },
+                                textAlign = TextAlign.Center,
+                                color = Color(0xFF38A0FF),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                text = "Please try again")
+                        }
+                    }
+
+                    item {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            text = "Buy, sell and hold crypto",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground)
+                    }
+
+                    item {
+                        LazyVerticalGrid(
+                            modifier = Modifier
+                                .height(500.dp)
+                                .padding(horizontal = 10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            columns = GridCells.Fixed(3),
+                            contentPadding = paddingValues
+                        ) {
+                           /** Not the best way to insert a different item as part of the grid */
+                            val combinedList = mutableListOf<Any?>()
+                            for (i in 0 until coinListPager.itemCount) {
+                                if (isInvitePosition(i + 1)) {
+                                    combinedList.add("InviteFriendCard")
+                                }
+                                combinedList.add(coinListPager[i])
+                            }
+
+                            items(combinedList.size) { index ->
+                                val item = combinedList[index]
+                                when (item) {
+                                    is String -> {
+                                        InviteFriendCard { webUrl ->
+                                            onOpenWebsiteClicked(webUrl)
+                                        }
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                    }
+                                    else -> {
+                                        CoinListCard(
+                                            coinListState = item as CoinListState,
+                                            onCardClicked = { uuid: String ->
+                                                isBottomSheetOpen = true
+                                                onCoinListAction(CoinListAction.CoinListCardClicked(uuid = uuid))
+                                                Logger.d {
+                                                    "uuid: $uuid"
+                                                }
+                                            })
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    item {
+                        if(coinListPager.loadState.append is LoadState.Loading) {
+                            CircularProgressIndicator()
+                        }
+                    }
+
+                    item {
+                        if(coinListPager.loadState.append is LoadState.Error) {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Normal,
+                                text = "Could not load data")
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        coinListPager.retry()
+                                    },
+                                textAlign = TextAlign.Center,
+                                color = Color(0xFF38A0FF),
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                text = "Please try again")
+                        }
                     }
                 }
             }
