@@ -17,12 +17,18 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -47,6 +53,7 @@ import me.androidbox.presentation.coin_list.components.CoinDetailContent
 import me.androidbox.presentation.coin_list.components.CoinDetailVerticalCard
 import me.androidbox.presentation.coin_list.components.CoinListCard
 import me.androidbox.presentation.coin_list.components.InviteFriendCard
+import me.androidbox.presentation.coin_list.components.TopBarSearch
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 
 @Composable
@@ -65,10 +72,17 @@ fun CoinListScreen(
 
     val pullToRefreshState = rememberPullToRefreshState()
     val rememberWindowInfo = rememberWindowInfo()
+    var text by remember { mutableStateOf("") }
+    var active by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            TopBarSearch(text) {
+                text = it
+            }
+        }
     ) {  paddingValues ->
         Box(
             modifier = Modifier
