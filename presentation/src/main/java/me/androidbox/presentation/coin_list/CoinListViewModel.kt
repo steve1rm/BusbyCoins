@@ -124,6 +124,10 @@ class CoinListViewModel(
             is CoinListAction.CoinListCardClicked -> {
                 fetchCoinDetail(action.uuid)
             }
+
+            is CoinListAction.SearchTermInput -> {
+                fetchNewSearchPaging(action.searchTerm)
+            }
         }
     }
 }
