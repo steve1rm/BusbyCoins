@@ -43,6 +43,7 @@ import co.touchlab.kermit.Logger
 import me.androidbox.presentation.coin_list.components.CoinDetailContent
 import me.androidbox.presentation.coin_list.components.CoinDetailVerticalCard
 import me.androidbox.presentation.coin_list.components.CoinListCard
+import me.androidbox.presentation.coin_list.components.InviteFriendCard
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 
 @Composable
@@ -158,8 +159,11 @@ fun CoinListScreen(
                     count = coinListPager.itemCount) { index ->
 
                     /** Insert the invite friend here by using multiples i.e. 5, 10,  20, 40, 80, 160 */
-                    if(isInvitePosition(index)) {
-                        Text("Invite a friend at index $index", fontSize = 24.sp)
+                    if(isInvitePosition(index + 1)) {
+                        InviteFriendCard { webUrl ->
+                            onOpenWebsiteClicked(webUrl)
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
 
                     coinListPager[index]?.let { coinListState ->

@@ -1,22 +1,25 @@
 package me.androidbox.presentation.coin_list.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
@@ -33,8 +36,10 @@ import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 @Composable
 fun InviteFriendCard(
     modifier: Modifier = Modifier,
-    onInviteClicked: () -> Unit
+    onInviteClicked: (webUrl: String) -> Unit
 ) {
+    val weburl = "https://careers.lmwn.com"
+
     Card(
         shape = RoundedCornerShape(size = 8.dp),
         colors = CardDefaults.cardColors(
@@ -46,9 +51,6 @@ fun InviteFriendCard(
         modifier = modifier
             .height(82.dp)
             .fillMaxWidth()
-            .clickable {
-                onInviteClicked()
-            }
     ) {
         Row(
             modifier = Modifier
@@ -59,11 +61,21 @@ fun InviteFriendCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Image(
-                modifier = Modifier.size(22.dp),
-                painter = painterResource(R.drawable.invite),
-                contentDescription = null
-            )
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .background(
+                        color = Color.White)
+                    .padding(12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    modifier = Modifier.size(22.dp),
+                    painter = painterResource(R.drawable.invite),
+                    contentDescription = null
+                )
+            }
 
             val annotatedString = buildDescriptionAnnotatedString()
 
@@ -73,7 +85,7 @@ fun InviteFriendCard(
                     start = offSet,
                     end = offSet
                 ).firstOrNull()?.let {
-                    onInviteClicked()
+                    onInviteClicked(weburl)
                 }
             }
         }
