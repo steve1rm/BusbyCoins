@@ -26,6 +26,8 @@ import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import me.androidbox.presentation.coin_list.CoinListState
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
+import me.androidbox.presentation.utils.toColor
+import me.androidbox.presentation.utils.toFormattedPrice
 
 @Composable
 fun CoinDetailContent(
@@ -71,7 +73,7 @@ fun CoinDetailContent(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     Text(
-                        text = coinListState.price,
+                        text = coinListState.price.toFormattedPrice(),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onPrimary)

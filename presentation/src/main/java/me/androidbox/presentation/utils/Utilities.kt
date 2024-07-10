@@ -1,5 +1,6 @@
 package me.androidbox.presentation.utils
 
+import androidx.compose.ui.graphics.Color
 import java.text.DecimalFormat
 
 fun String.toFormattedPrice(): String {
@@ -8,4 +9,9 @@ fun String.toFormattedPrice(): String {
     return this.toDoubleOrNull()?.let { price ->
         return formatter.format(price)
     } ?: this
+}
+
+
+fun String.toColor(): Color {
+    return Color(android.graphics.Color.parseColor("#ff$this"))
 }
