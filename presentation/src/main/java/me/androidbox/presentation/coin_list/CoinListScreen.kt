@@ -305,30 +305,35 @@ fun CoinListScreen(
                             columns = GridCells.Fixed(3),
                             contentPadding = paddingValues
                         ) {
-                            items(
-                                key = { coinListPager ->
-                                    coinListPager
-                                },
-                                count = coinListPager.itemCount) { index ->
-
-                                /** Insert the invite friend here by using multiples i.e. 5, 10,  20, 40, 80, 160 */
-                                if(isInvitePosition(index + 1)) {
-                                    InviteFriendCard { webUrl ->
-                                        onOpenWebsiteClicked(webUrl)
-                                    }
-                                    Spacer(modifier = Modifier.height(8.dp))
+                           /** Not the best way to insert a different item as part of the grid */
+                            val combinedList = mutableListOf<Any?>()
+                            for (i in 0 until coinListPager.itemCount) {
+                                if (isInvitePosition(i + 1)) {
+                                    combinedList.add("InviteFriendCard")
                                 }
+                                combinedList.add(coinListPager[i])
+                            }
 
-                                coinListPager[index]?.let { coinListState ->
-                                    CoinListCard(
-                                        coinListState = coinListState,
-                                        onCardClicked = { uuid: String ->
-                                            isBottomSheetOpen = true
-                                            onCoinListAction(CoinListAction.CoinListCardClicked(uuid = uuid))
-                                            Logger.d {
-                                                "uuid: $uuid"
-                                            }
-                                        })
+                            items(combinedList.size) { index ->
+                                val item = combinedList[index]
+                                when (item) {
+                                    is String -> {
+                                        InviteFriendCard { webUrl ->
+                                            onOpenWebsiteClicked(webUrl)
+                                        }
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                    }
+                                    else -> {
+                                        CoinListCard(
+                                            coinListState = item as CoinListState,
+                                            onCardClicked = { uuid: String ->
+                                                isBottomSheetOpen = true
+                                                onCoinListAction(CoinListAction.CoinListCardClicked(uuid = uuid))
+                                                Logger.d {
+                                                    "uuid: $uuid"
+                                                }
+                                            })
+                                    }
                                 }
                             }
                         }
