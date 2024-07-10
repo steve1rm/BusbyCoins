@@ -18,7 +18,6 @@ import me.androidbox.domain.utils.ErrorModel
 
 class CoinListRepositoryImp(
     private val coinListRemoteDataSource: CoinListRemoteDataSource,
-    private val coinListPager: CoinListPager
 ) : CoinListRepository {
     override suspend fun fetchCoinList(offset: Int, limit: Int): CheckResult<CoinListModel, DataError.Network, ErrorModel> {
 
@@ -59,13 +58,15 @@ class CoinListRepositoryImp(
         }
     }
 
-    fun getPagedCoinList(): Flow<PagingData<CoinModel>> {
+    fun getPagedCoinList(searchTerm: String): Flow<PagingData<CoinModel>> {
         return Pager(
             config = PagingConfig(pageSize = 20, enablePlaceholders = false),
             pagingSourceFactory = {
                 /** Needs to recreate a new one each time a user refreshes to force
                  * the pager to fetch fresh data */
-                CoinListPager(coinListRemoteDataSource)
+                CoinListPager(
+                    coinListRemoteDataSource = coinListRemoteDataSource,
+                    searchTerm = searchTerm)
             }
         ).flow
     }

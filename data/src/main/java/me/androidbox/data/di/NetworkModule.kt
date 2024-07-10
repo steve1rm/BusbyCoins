@@ -24,10 +24,10 @@ val networkModule = module {
     factoryOf(::CoinListPager)
 
     factory<CoinListRepository> {
-        CoinListRepositoryImp(get<CoinListRemoteDataSource>(), get<CoinListPager>())
+        CoinListRepositoryImp(get<CoinListRemoteDataSource>())
     }
 
     factory<CoinListRepositoryImp> {
-        CoinListRepositoryImp(get<CoinListRemoteDataSource>(), get<CoinListPager>())
+        CoinListRepositoryImp(get<CoinListRemoteDataSource>())
     }
 }

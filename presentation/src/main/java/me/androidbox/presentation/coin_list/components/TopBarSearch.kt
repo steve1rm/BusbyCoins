@@ -32,6 +32,7 @@ fun TopBarSearch(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .padding(horizontal = 10.dp)
             .clip(RoundedCornerShape(4.dp))
             .background(Color(0XFF101921))
 

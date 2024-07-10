@@ -29,7 +29,7 @@ class CoinListViewModel(
         private set
 
     val coinList = coinListRepositoryImp
-        .getPagedCoinList()
+        .getPagedCoinList("bitcoin")
         .map { pagingData ->
             pagingData
                 .filter { coinModel ->

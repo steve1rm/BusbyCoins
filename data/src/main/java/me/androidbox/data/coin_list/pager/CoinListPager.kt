@@ -8,7 +8,8 @@ import me.androidbox.domain.coin_list.models.CoinModel
 import me.androidbox.domain.utils.CheckResult
 
 class CoinListPager(
-    private val coinListRemoteDataSource: CoinListRemoteDataSource
+    private val coinListRemoteDataSource: CoinListRemoteDataSource,
+    private val searchTerm: String = "",
 ) : PagingSource<Int, CoinModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, CoinModel>): Int? {
