@@ -20,9 +20,9 @@ class CoinListRepositoryImp(
     private val coinListRemoteDataSource: CoinListRemoteDataSource,
     private val coinListPager: CoinListPager
 ) : CoinListRepository {
-    override suspend fun fetchCoinList(): CheckResult<CoinListModel, DataError.Network, ErrorModel> {
+    override suspend fun fetchCoinList(offset: Int, limit: Int): CheckResult<CoinListModel, DataError.Network, ErrorModel> {
 
-        return when(val apiResponse = coinListRemoteDataSource.fetchCoinList()) {
+        return when(val apiResponse = coinListRemoteDataSource.fetchCoinList(offset, limit)) {
             is CheckResult.Failure -> {
                 CheckResult.Failure(
                     exceptionError = apiResponse.exceptionError,
@@ -63,6 +63,8 @@ class CoinListRepositoryImp(
         return Pager(
             config = PagingConfig(pageSize = 20, enablePlaceholders = false),
             pagingSourceFactory = {
+                /** Needs to recreate a new one each time a user refreshes to force
+                 * the pager to fetch fresh data */
                 CoinListPager(coinListRemoteDataSource)
             }
         ).flow
