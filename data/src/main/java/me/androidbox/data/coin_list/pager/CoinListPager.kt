@@ -27,7 +27,7 @@ class CoinListPager(
         val position = params.key ?: 1
         val offset = (position - 1) * 20
 
-       when(val response = coinListRemoteDataSource.fetchCoinList(offset)) {
+       when(val response = coinListRemoteDataSource.fetchCoinList(offset = offset, searchTerm = searchTerm)) {
             is CheckResult.Failure -> {
                 return LoadResult.Error(Throwable(message = response.exceptionError.toString()))
             }

@@ -24,7 +24,7 @@ class CoinListRemoteDataSourceImp(
                     url {
                         this.parameters.append("offset", offSet.toString())
                         this.parameters.append("limit", limit.toString())
-                        this.parameters.append("search", "bitmex")
+                        this.parameters.append("search", searchTerm)
                     }
                     headers {
                         this.append("x-access-token", BuildConfig.COIN_RANKING_API_KEY)
