@@ -3,6 +3,7 @@
 package me.androidbox.presentation.coin_list.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,7 +28,8 @@ import androidx.compose.ui.unit.dp
 fun TopBarSearch(
     search: String,
     modifier: Modifier = Modifier,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    onCloseIconClicked: () -> Unit
 ) {
 
     Box(
@@ -50,7 +52,11 @@ fun TopBarSearch(
             value = search,
             onValueChange = onValueChange,
             leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "search") },
-            trailingIcon = { Icon(imageVector = Icons.Default.Close, contentDescription = "close") },
+            trailingIcon = { Icon(
+                modifier = Modifier.clickable {
+                    onCloseIconClicked()
+                },
+                imageVector = Icons.Default.Close, contentDescription = "close") },
             placeholder = { Text(text = "Search") }
         )
     }
@@ -59,5 +65,8 @@ fun TopBarSearch(
 @Composable
 @Preview
 fun PreviewTopBarSearch() {
-    TopBarSearch("") { }
+    TopBarSearch(
+        search = "",
+        onValueChange = {},
+        onCloseIconClicked = {})
 }

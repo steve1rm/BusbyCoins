@@ -72,13 +72,18 @@ fun CoinListScreen(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            TopBarSearch(text) { searchTerm ->
-                text = searchTerm
-                onCoinListAction(CoinListAction.SearchTermInput(text))
-                Logger.d {
-                    "search term $text"
-                }
-            }
+            TopBarSearch(
+                search = text,
+                onValueChange = { searchTerm ->
+                    text = searchTerm
+                    onCoinListAction(CoinListAction.SearchTermInput(text))
+                    Logger.d {
+                        "search term $text"
+                    }
+                },
+                onCloseIconClicked = {
+                    text = ""
+                })
         }
     ) {  paddingValues ->
         Box(
