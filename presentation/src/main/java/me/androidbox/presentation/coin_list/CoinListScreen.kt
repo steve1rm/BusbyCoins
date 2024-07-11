@@ -83,6 +83,7 @@ fun CoinListScreen(
                 },
                 onCloseIconClicked = {
                     text = ""
+                    onCoinListAction(CoinListAction.SearchTermInput(text))
                 })
         }
     ) {  paddingValues ->
