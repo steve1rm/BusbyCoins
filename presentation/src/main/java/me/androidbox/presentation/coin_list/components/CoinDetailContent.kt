@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +27,7 @@ import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import me.androidbox.presentation.coin_list.CoinListState
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
+import me.androidbox.presentation.utils.toFormattedPrice
 
 @Composable
 fun CoinDetailContent(
@@ -36,66 +38,83 @@ fun CoinDetailContent(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp)
-            .padding(top = 24.dp, bottom = 16.dp),
+            .padding(top = 24.dp, bottom = 24.dp),
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            KamelImage(
-                modifier = Modifier.size(50.dp),
-                resource = asyncPainterResource(
-                    data = coinListState.imageUri
-                ),
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                onLoading = {
-                    CircularProgressIndicator()
-                }
-            )
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        ) {
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                KamelImage(
+                    modifier = Modifier.size(50.dp),
+                    resource = asyncPainterResource(
+                        data = coinListState.imageUri
+                    ),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    onLoading = {
+                        CircularProgressIndicator()
+                    }
+                )
 
-            Column {
-                Row {
-                    Text(text = coinListState.name)
+                Spacer(modifier = Modifier.width(16.dp))
 
-                    Spacer(modifier = Modifier.width(6.dp))
+                Column(
+                    modifier = Modifier.padding(horizontal = 24.dp)
+                ) {
+                    Row {
+                        Text(text = coinListState.name)
 
-                    Text(text = "(${coinListState.symbol})")
-                }
-                Row {
-                    Text(text = "price".uppercase(),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary)
+                        Spacer(modifier = Modifier.width(6.dp))
 
-                    Spacer(modifier = Modifier.width(16.dp))
+                        Text(text = "(${coinListState.symbol})")
+                    }
+                    Row {
+                        Text(
+                            text = "price".uppercase(),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
 
-                    Text(
-                        text = coinListState.price,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onPrimary)
-                }
+                        Spacer(modifier = Modifier.width(16.dp))
 
-                Row {
-                    Text(text = "market cap".uppercase(),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary)
+                        Text(
+                            text = "$${coinListState.price.toFormattedPrice()}",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
 
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Row {
+                        Text(
+                            text = "market cap".uppercase(),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
 
-                    Text(text = coinListState.marketCap,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onPrimary)
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        Text(
+                            text = coinListState.marketCap,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(text = coinListState.description)
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = coinListState.description)
+        Spacer(modifier = Modifier.height(8.dp))
 
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(),
@@ -116,6 +135,10 @@ fun CoinDetailContent(
         )
     }
 }
+
+// light background: #EEEEEE;
+
+// dark background: #555555;
 
 @Composable
 @Preview
