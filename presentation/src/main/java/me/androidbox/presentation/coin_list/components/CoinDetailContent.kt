@@ -76,7 +76,7 @@ fun CoinDetailContent(
                         Text(text = "(${coinListState.symbol})",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Normal,
-                            color = Color.Black)
+                            color = MaterialTheme.colorScheme.onPrimary)
                     }
                     Row {
                         Text(
