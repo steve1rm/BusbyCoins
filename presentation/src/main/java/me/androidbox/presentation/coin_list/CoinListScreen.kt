@@ -116,31 +116,28 @@ fun CoinListScreen(
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            LazyRow(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                items(
-                                    items = coinTopRankedState
-                                ) { coin ->
-                                    CoinDetailVerticalCard(coin) {
-                                        /** no-op */
+                            Box(modifier = Modifier.fillMaxWidth(),
+                                contentAlignment = Alignment.Center) {
+                                if(coinListState.isLoading) {
+                                    CircularProgressIndicator()
+                                }
+                                else {
+                                    LazyRow(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        items(
+                                            items = coinTopRankedState
+                                        ) { coin ->
+                                            CoinDetailVerticalCard(coin) {
+                                                /** no-op */
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-
-                    /** Top progress indicator */
-                    item {
-                        if(coinListPager.loadState.refresh is LoadState.Loading) {
-                            CircularProgressIndicator()
-                            if(pullToRefreshState.isRefreshing) {
-                                pullToRefreshState.endRefresh()
-                            }
-                        }
-                    }
-
 
                     item {
                         if(coinListPager.loadState.refresh is LoadState.Error) {
@@ -174,6 +171,16 @@ fun CoinListScreen(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onBackground)
+                    }
+
+                    /** Top progress indicator */
+                    item {
+                        if(coinListPager.loadState.refresh is LoadState.Loading) {
+                            CircularProgressIndicator()
+                            if(pullToRefreshState.isRefreshing) {
+                                pullToRefreshState.endRefresh()
+                            }
+                        }
                     }
 
                     items(

@@ -61,8 +61,8 @@ class CoinListViewModel(
                         }
                 }
                 .cachedIn(viewModelScope)
-                .collect {
-                    _coinListFlow.value = it
+                .collect { pagingData ->
+                    _coinListFlow.value = pagingData
                 }
         }
     }
