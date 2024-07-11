@@ -76,7 +76,9 @@ fun CoinListCard(
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     onLoading = {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(
+                            color = Color.Blue
+                        )
                     }
                 )
 

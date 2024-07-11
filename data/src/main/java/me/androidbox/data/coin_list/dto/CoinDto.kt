@@ -6,22 +6,22 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CoinDto(
-    val btcPrice: String,
-    val change: String,
-    val coinrankingUrl: String,
-    val color: String?,
-    val contractAddresses: List<String>,
+    val btcPrice: String = "",
+    val change: String = "",
+    val coinrankingUrl: String = "",
+    val color: String? = "",
+    val contractAddresses: List<String> = emptyList(),
     @SerialName("24hVolume")
-    val h24Volume: String,
-    val iconUrl: String,
-    val listedAt: Int,
-    val lowVolume: Boolean,
-    val marketCap: String,
-    val name: String,
-    val price: String,
-    val rank: Int,
-    val sparkline: List<String?>,
-    val symbol: String,
-    val tier: Int,
-    val uuid: String
+    val h24Volume: String = "",
+    val iconUrl: String = "",
+    val listedAt: Int = 0,
+    val lowVolume: Boolean = false,
+    val marketCap: String = "",
+    val name: String = "",
+    val price: String = "",
+    val rank: Int = 0,
+    val sparkline: List<String?> = emptyList(),
+    val symbol: String = "",
+    val tier: Int = 0,
+    val uuid: String = ""
 )
