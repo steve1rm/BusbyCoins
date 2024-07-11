@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.paging.compose)
+    implementation(libs.bundles.koin.worker)
 
     testImplementation(libs.coroutinesTest)
 

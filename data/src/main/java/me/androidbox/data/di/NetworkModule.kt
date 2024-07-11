@@ -6,7 +6,9 @@ import me.androidbox.data.coin_list.remote_data_source.CoinListRemoteDataSource
 import me.androidbox.data.coin_list.remote_data_source.imp.CoinListRemoteDataSourceImp
 import me.androidbox.data.coin_list.repository.CoinListRepositoryImp
 import me.androidbox.data.network_client.HttpKtorClient
+import me.androidbox.data.worker.UpdateCoinsWorker
 import me.androidbox.domain.repository.CoinListRepository
+import org.koin.androidx.workmanager.dsl.workerOf
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -30,4 +32,6 @@ val networkModule = module {
     factory<CoinListRepositoryImp> {
         CoinListRepositoryImp(get<CoinListRemoteDataSource>())
     }
+
+    workerOf(::UpdateCoinsWorker)
 }
