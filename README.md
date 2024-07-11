@@ -11,7 +11,7 @@ Uses coins api to fetch crypto currency coins using pagnation to get an infinate
 5. Users can search the coin by keyword
 6. Users can see top 3 of coin by rank
 7. Users can invite friends
-8. Users can see last update data every 10 seconds (partially implemented)
+8. Users can see last update data every 10 seconds (partially implemented with work manager)
 9. Users can use the application on both orientations
 10. Users can use the application in dark theme
 
