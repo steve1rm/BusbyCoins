@@ -119,7 +119,9 @@ fun CoinListScreen(
                             Box(modifier = Modifier.fillMaxWidth(),
                                 contentAlignment = Alignment.Center) {
                                 if(coinListState.isLoading) {
-                                    CircularProgressIndicator()
+                                    CircularProgressIndicator(
+                                        color = Color.Blue
+                                    )
                                 }
                                 else {
                                     LazyRow(
@@ -176,7 +178,9 @@ fun CoinListScreen(
                     /** Top progress indicator */
                     item {
                         if(coinListPager.loadState.refresh is LoadState.Loading) {
-                            CircularProgressIndicator()
+                            CircularProgressIndicator(
+                                color = Color.Blue
+                            )
                             if(pullToRefreshState.isRefreshing) {
                                 pullToRefreshState.endRefresh()
                             }
@@ -212,7 +216,9 @@ fun CoinListScreen(
 
                     item {
                         if(coinListPager.loadState.append is LoadState.Loading) {
-                            CircularProgressIndicator()
+                            CircularProgressIndicator(
+                                color = Color.Blue
+                            )
                         }
                     }
 
@@ -280,7 +286,9 @@ fun CoinListScreen(
                     /** Top progress indicator */
                     item {
                         if(coinListPager.loadState.refresh is LoadState.Loading) {
-                            CircularProgressIndicator()
+                            CircularProgressIndicator(
+                                color = Color.Blue
+                            )
                             if(pullToRefreshState.isRefreshing) {
                                 pullToRefreshState.endRefresh()
                             }
@@ -367,7 +375,9 @@ fun CoinListScreen(
 
                     item {
                         if(coinListPager.loadState.append is LoadState.Loading) {
-                            CircularProgressIndicator()
+                            CircularProgressIndicator(
+                                color = Color.Blue
+                            )
                         }
                     }
 
@@ -421,6 +431,7 @@ fun CoinListScreen(
                 contentAlignment = Alignment.Center) {
                 if(coinListState.isLoading) {
                     CircularProgressIndicator(
+                        color = Color.Blue,
                         modifier = Modifier.padding(top = 24.dp, bottom = 24.dp)
                     )
                 }
