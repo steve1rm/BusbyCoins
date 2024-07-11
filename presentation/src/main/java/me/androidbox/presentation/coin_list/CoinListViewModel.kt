@@ -144,6 +144,10 @@ class CoinListViewModel(
             is CoinListAction.SearchTermInput -> {
                 fetchNewSearchPaging(action.searchTerm)
             }
+
+            CoinListAction.RetryClicked -> {
+                fetchCoinList(limit = 3)
+            }
         }
     }
 
