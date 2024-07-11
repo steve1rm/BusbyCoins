@@ -16,7 +16,7 @@ Uses coins api to fetch crypto currency coins using pagnation to get an infinate
 10. Users can use the application in dark theme
 
  
-# Libraries and architecture
+# Libraries and tech stack
 - [x] Jetpack Compose
 - [x] Koin dependency injection
 - [x] Voyager for navigation
@@ -28,6 +28,6 @@ Uses coins api to fetch crypto currency coins using pagnation to get an infinate
 - [x] MVVM
 - [x] Pager3 for pagnation
 - [x] Material design 3
-- [x] oAuth authentication
+- [x] Dark and light theme
 - [X] kermit for logging
 - [X] work manager for scheduling updates
