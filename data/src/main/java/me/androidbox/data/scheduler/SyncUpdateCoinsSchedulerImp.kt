@@ -44,7 +44,7 @@ class SyncUpdateCoinsSchedulerImp(
                 .isNotEmpty()
         }
 
-        if(!isSyncScheduled) {
+        if(isSyncScheduled) {
             val workRequest = PeriodicWorkRequestBuilder<UpdateCoinsWorker>(
                 repeatInterval = interval.toJavaDuration()
             )

@@ -22,12 +22,14 @@ import kotlinx.coroutines.launch
 import me.androidbox.data.coin_list.repository.CoinListRepositoryImp
 import me.androidbox.domain.coin_detail.usescases.FetchCoinDetailUseCase
 import me.androidbox.domain.coin_list.usecases.FetchCoinListUseCase
+import me.androidbox.domain.scheduler.SyncUpdateCoinsScheduler
 import me.androidbox.domain.utils.CheckResult
 
 class CoinListViewModel(
     private val fetchCoinListUseCase: FetchCoinListUseCase,
     private val fetchCoinDetailUseCase: FetchCoinDetailUseCase,
-    private val coinListRepositoryImp: CoinListRepositoryImp
+    private val coinListRepositoryImp: CoinListRepositoryImp,
+    private val syncUpdateCoinsScheduler: SyncUpdateCoinsScheduler
 ) : ViewModel() {
 
     var coinDetailState by mutableStateOf(CoinListState())
@@ -42,6 +44,10 @@ class CoinListViewModel(
     init {
         fetchCoinList(limit = 3)
         fetchNewSearchPaging("")
+
+        viewModelScope.launch {
+            syncUpdateCoinsScheduler.scheduleUpdate()
+        }
     }
 
     private fun fetchNewSearchPaging(searchTerm: String) {
@@ -138,6 +144,13 @@ class CoinListViewModel(
             is CoinListAction.SearchTermInput -> {
                 fetchNewSearchPaging(action.searchTerm)
             }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.launch {
+            syncUpdateCoinsScheduler.cancelSync()
         }
     }
 }
