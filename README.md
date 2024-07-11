@@ -33,6 +33,8 @@ Uses coins api to fetch crypto currency coins using pagnation to get an infinate
 - [X] work manager for scheduling updates
 
 # Screenshots
+![Uploading Screenshot from 2024-07-11 20-03-25.png…]()
+
 ![Screenshot from 2024-07-11 19-41-20](https://github.com/steve1rm/BusbyCoins/assets/14260802/cbfde27d-d090-490c-9e1a-e84770017e84)
 ![Screenshot from 2024-07-11 19-41-05](https://github.com/steve1rm/BusbyCoins/assets/14260802/96362f64-3667-496b-9392-c62cfba12d40)
 ![Screenshot from 2024-07-11 19-41-37](https://github.com/steve1rm/BusbyCoins/assets/14260802/9a4e18c4-5883-4a27-9c79-1c94ea8f2bae)
