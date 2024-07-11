@@ -104,6 +104,7 @@ class CoinListViewModel(
                         description = checkResult.data.data.coin.description,
                         websiteUrl = checkResult.data.data.coin.websiteUrl,
                         color = checkResult.data.data.coin.color,
+                        marketCap = checkResult.data.data.coin.marketCap,
                         isLoading = false
                     )
                 }

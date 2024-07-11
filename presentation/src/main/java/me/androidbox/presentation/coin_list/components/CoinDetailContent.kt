@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +26,8 @@ import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import me.androidbox.presentation.coin_list.CoinListState
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
+import me.androidbox.presentation.utils.appendWithSuffix
+import me.androidbox.presentation.utils.parseColor
 import me.androidbox.presentation.utils.toFormattedPrice
 
 @Composable
@@ -65,11 +66,17 @@ fun CoinDetailContent(
                     modifier = Modifier.padding(horizontal = 24.dp)
                 ) {
                     Row {
-                        Text(text = coinListState.name)
+                        Text(text = coinListState.name,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = parseColor(coinListState.color))
 
                         Spacer(modifier = Modifier.width(6.dp))
 
-                        Text(text = "(${coinListState.symbol})")
+                        Text(text = "(${coinListState.symbol})",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black)
                     }
                     Row {
                         Text(
@@ -79,10 +86,10 @@ fun CoinDetailContent(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
 
-                        Spacer(modifier = Modifier.width(16.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
 
                         Text(
-                            text = "$${coinListState.price.toFormattedPrice()}",
+                            text = "$${coinListState.price.toFormattedPrice(decimalPlaces = 2)}",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onPrimary
@@ -97,10 +104,10 @@ fun CoinDetailContent(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
 
-                        Spacer(modifier = Modifier.width(16.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
 
                         Text(
-                            text = coinListState.marketCap,
+                            text = "$${coinListState.marketCap.appendWithSuffix()}",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onPrimary
