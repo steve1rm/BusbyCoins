@@ -34,9 +34,10 @@ Uses coins api to fetch crypto currency coins using pagnation to get an infinate
 
 # Screenshots
 ![Uploading Screenshot from 2024-07-11 19-41-37.png…]()
-![Uploading Screenshot from 2024-07-11 19-41-37.png…]()
-![Screenshot from 2024-07-11 19-41-20](https://github.com/steve1rm/BusbyCoins/assets/14260802/76ab41eb-a86b-416b-8e36-59d888871e58)
 
+![Screenshot from 2024-07-11 19-41-20](https://github.com/steve1rm/BusbyCoins/assets/14260802/cbfde27d-d090-490c-9e1a-e84770017e84)
+![Screenshot from 2024-07-11 19-41-05](https://github.com/steve1rm/BusbyCoins/assets/14260802/96362f64-3667-496b-9392-c62cfba12d40)
+![Screenshot from 2024-07-11 19-41-20](https://github.com/steve1rm/BusbyCoins/assets/14260802/76ab41eb-a86b-416b-8e36-59d888871e58)
 ![Screenshot from 2024-07-11 19-48-21](https://github.com/steve1rm/BusbyCoins/assets/14260802/c313f439-1152-4aa9-94c7-4f1971b1d138)
 ![Screenshot from 2024-07-11 19-48-03](https://github.com/steve1rm/BusbyCoins/assets/14260802/ab25d60e-4900-471f-a754-8dc69104d7ce)
 ![Screenshot from 2024-07-11 19-45-25](https://github.com/steve1rm/BusbyCoins/assets/14260802/0246d653-cc70-4834-9e9b-d3742e95f602)
