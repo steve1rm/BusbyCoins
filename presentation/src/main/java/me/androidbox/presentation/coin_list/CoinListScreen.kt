@@ -54,6 +54,7 @@ fun CoinListScreen(
     coinListPager: LazyPagingItems<CoinListState>,
     coinListState: CoinListState,
     coinTopRankedState: List<CoinListState>,
+    coinListLoadingState: Boolean,
     onCoinListAction: (action: CoinListAction) -> Unit,
     onOpenWebsiteClicked: (webUrl: String) -> Unit,
     modifier: Modifier = Modifier
@@ -144,7 +145,7 @@ fun CoinListScreen(
 
                                 Box(modifier = Modifier.fillMaxWidth(),
                                     contentAlignment = Alignment.Center) {
-                                    if(coinListState.isLoading) {
+                                    if(coinListLoadingState) {
                                         CircularProgressIndicator(
                                             color = Color.Blue
                                         )
@@ -279,10 +280,7 @@ fun CoinListScreen(
                             items(
                                 items = coinTopRankedState
                             ) { coin ->
-                                CoinDetailVerticalCard(coin) { uuid: String ->
-                                    isBottomSheetOpen = true
-                                    onCoinListAction(CoinListAction.CoinListCardClicked(uuid = uuid))
-                                    /** no-op */
+                                CoinDetailVerticalCard(coin) {
                                 }
                             }
                         }

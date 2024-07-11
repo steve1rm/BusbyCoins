@@ -15,7 +15,7 @@ data object CoinListScreenRoute : Screen {
         val coinListViewModel = koinViewModel<CoinListViewModel>()
         val paging = coinListViewModel.coinList.collectAsLazyPagingItems()
         val coinListState = coinListViewModel.coinDetailState
-
+        val coinListLoadingState = coinListViewModel.coinListLoadingState
         val coinTopRankedState = coinListViewModel.coinTopRankedState
         val urlHandler = LocalUriHandler.current
 
@@ -23,6 +23,7 @@ data object CoinListScreenRoute : Screen {
             coinListPager = paging,
             coinListState = coinListState,
             coinTopRankedState = coinTopRankedState,
+            coinListLoadingState = coinListLoadingState,
             onCoinListAction = coinListViewModel::coinListAction,
             onOpenWebsiteClicked = { webUrl ->
                 urlHandler.openUri(webUrl)

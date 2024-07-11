@@ -38,6 +38,9 @@ class CoinListViewModel(
     var coinTopRankedState by mutableStateOf(listOf(CoinListState()))
         private set
 
+    var coinListLoadingState by mutableStateOf(false)
+        private set
+
     private val _coinListFlow = MutableStateFlow<PagingData<CoinListState>>(PagingData.empty())
     val coinList: StateFlow<PagingData<CoinListState>> = _coinListFlow.asStateFlow()
 
@@ -82,14 +85,14 @@ class CoinListViewModel(
     /** The number of items you want to return, in this case the top ranked 3 items */
     private fun fetchCoinList(limit: Int) {
         viewModelScope.launch {
-            coinDetailState = coinDetailState.copy(isLoading = true)
+            coinListLoadingState = true
 
             when(val checkResult = fetchCoinListUseCase.execute(offset = 0, limit = limit)) {
                 is CheckResult.Failure -> {
-                    coinDetailState = coinDetailState.copy(isLoading = false)
+                    coinListLoadingState = false
                 }
                 is CheckResult.Success -> {
-                    coinDetailState = coinDetailState.copy(isLoading = false)
+                    coinListLoadingState = false
 
                     val listOfCoins = checkResult.data.data.coins.map { coinModel ->
                         CoinListState(
