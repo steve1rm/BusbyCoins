@@ -1,3 +1,5 @@
+@file:OptIn(FlowPreview::class)
+
 package me.androidbox.presentation.coin_list
 
 import androidx.compose.runtime.getValue
@@ -10,8 +12,11 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.paging.map
 import co.touchlab.kermit.Logger
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import me.androidbox.data.coin_list.repository.CoinListRepositoryImp
@@ -32,7 +37,7 @@ class CoinListViewModel(
         private set
 
     private val _coinListFlow = MutableStateFlow<PagingData<CoinListState>>(PagingData.empty())
-    val coinList: StateFlow<PagingData<CoinListState>> = _coinListFlow
+    val coinList: StateFlow<PagingData<CoinListState>> = _coinListFlow.asStateFlow()
 
     init {
         fetchCoinList(limit = 3)
@@ -43,6 +48,7 @@ class CoinListViewModel(
         viewModelScope.launch {
             coinListRepositoryImp
                 .getPagedCoinList(searchTerm)
+                .debounce(300)
                 .map { pagingData ->
                     pagingData
                         .filter { coinModel ->
