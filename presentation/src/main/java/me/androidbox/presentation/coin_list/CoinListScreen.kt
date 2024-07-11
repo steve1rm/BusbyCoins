@@ -54,6 +54,7 @@ fun CoinListScreen(
     coinListPager: LazyPagingItems<CoinListState>,
     coinListState: CoinListState,
     coinTopRankedState: List<CoinListState>,
+    coinListLoadingState: Boolean,
     onCoinListAction: (action: CoinListAction) -> Unit,
     onOpenWebsiteClicked: (webUrl: String) -> Unit,
     modifier: Modifier = Modifier
@@ -102,48 +103,8 @@ fun CoinListScreen(
                     contentPadding = paddingValues
                 ) {
 
-                    if(text.isBlank()) {
+                    if(coinListPager.loadState.refresh is LoadState.Error) {
                         item {
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Start,
-                                text = "Top 3 rank crypto",
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Box(modifier = Modifier.fillMaxWidth(),
-                                contentAlignment = Alignment.Center) {
-                                if(coinListState.isLoading) {
-                                    CircularProgressIndicator(
-                                        color = Color.Blue
-                                    )
-                                }
-                                else {
-                                    LazyRow(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        items(
-                                            items = coinTopRankedState
-                                        ) { coin ->
-                                            CoinDetailVerticalCard(coin) {
-                                                /** no-op */
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    item {
-                        if(coinListPager.loadState.refresh is LoadState.Error) {
                             Text(
                                 modifier = Modifier
                                     .fillMaxWidth(),
@@ -157,12 +118,54 @@ fun CoinListScreen(
                                     .fillMaxWidth()
                                     .clickable {
                                         coinListPager.retry()
+                                        onCoinListAction(CoinListAction.RetryClicked)
                                     },
                                 textAlign = TextAlign.Center,
                                 color = Color(0xFF38A0FF),
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
                                 text = "Please try again")
+                        }
+                    }
+                    else {
+                        if(text.isBlank()) {
+                            item {
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    textAlign = TextAlign.Start,
+                                    text = "Top 3 rank crypto",
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onBackground
+                                )
+
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                Box(modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center) {
+                                    if(coinListLoadingState) {
+                                        CircularProgressIndicator(
+                                            color = Color.Blue
+                                        )
+                                    }
+                                    else {
+                                        LazyRow(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            items(
+                                                items = coinTopRankedState
+                                            ) { coin ->
+                                                CoinDetailVerticalCard(coin) {
+                                                    /** no-op */
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -278,7 +281,6 @@ fun CoinListScreen(
                                 items = coinTopRankedState
                             ) { coin ->
                                 CoinDetailVerticalCard(coin) {
-                                    /** no-op */
                                 }
                             }
                         }

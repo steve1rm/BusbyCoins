@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.coroutines)
     implementation(libs.kermit)
     implementation(libs.androidx.paging.common.android)
+    implementation(libs.bundles.koin.worker)
 
     testImplementation(libs.truth)
     testImplementation(libs.mockito.kotlin)

@@ -22,12 +22,14 @@ import kotlinx.coroutines.launch
 import me.androidbox.data.coin_list.repository.CoinListRepositoryImp
 import me.androidbox.domain.coin_detail.usescases.FetchCoinDetailUseCase
 import me.androidbox.domain.coin_list.usecases.FetchCoinListUseCase
+import me.androidbox.domain.scheduler.SyncUpdateCoinsScheduler
 import me.androidbox.domain.utils.CheckResult
 
 class CoinListViewModel(
     private val fetchCoinListUseCase: FetchCoinListUseCase,
     private val fetchCoinDetailUseCase: FetchCoinDetailUseCase,
-    private val coinListRepositoryImp: CoinListRepositoryImp
+    private val coinListRepositoryImp: CoinListRepositoryImp,
+    private val syncUpdateCoinsScheduler: SyncUpdateCoinsScheduler
 ) : ViewModel() {
 
     var coinDetailState by mutableStateOf(CoinListState())
@@ -36,12 +38,19 @@ class CoinListViewModel(
     var coinTopRankedState by mutableStateOf(listOf(CoinListState()))
         private set
 
+    var coinListLoadingState by mutableStateOf(false)
+        private set
+
     private val _coinListFlow = MutableStateFlow<PagingData<CoinListState>>(PagingData.empty())
     val coinList: StateFlow<PagingData<CoinListState>> = _coinListFlow.asStateFlow()
 
     init {
         fetchCoinList(limit = 3)
         fetchNewSearchPaging("")
+
+        viewModelScope.launch {
+            syncUpdateCoinsScheduler.scheduleUpdate()
+        }
     }
 
     private fun fetchNewSearchPaging(searchTerm: String) {
@@ -76,14 +85,14 @@ class CoinListViewModel(
     /** The number of items you want to return, in this case the top ranked 3 items */
     private fun fetchCoinList(limit: Int) {
         viewModelScope.launch {
-            coinDetailState = coinDetailState.copy(isLoading = true)
+            coinListLoadingState = true
 
             when(val checkResult = fetchCoinListUseCase.execute(offset = 0, limit = limit)) {
                 is CheckResult.Failure -> {
-                    coinDetailState = coinDetailState.copy(isLoading = false)
+                    coinListLoadingState = false
                 }
                 is CheckResult.Success -> {
-                    coinDetailState = coinDetailState.copy(isLoading = false)
+                    coinListLoadingState = false
 
                     val listOfCoins = checkResult.data.data.coins.map { coinModel ->
                         CoinListState(
@@ -138,6 +147,17 @@ class CoinListViewModel(
             is CoinListAction.SearchTermInput -> {
                 fetchNewSearchPaging(action.searchTerm)
             }
+
+            CoinListAction.RetryClicked -> {
+                fetchCoinList(limit = 3)
+            }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.launch {
+            syncUpdateCoinsScheduler.cancelSync()
         }
     }
 }
