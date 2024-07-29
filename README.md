@@ -25,7 +25,7 @@ Uses coins api to fetch crypto currency coins using pagnation to get an infinate
 - [x] Gradle version catalog
 - [x] kotlin coroutines
 - [x] Flows
-- [x] MVVM
+- [x] MVI
 - [x] Pager3 for pagnation
 - [x] Material design 3
 - [x] Dark and light theme
