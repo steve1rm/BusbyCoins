@@ -67,7 +67,6 @@ fun CoinListScreen(
     val pullToRefreshState = rememberPullToRefreshState()
     val rememberWindowInfo = rememberWindowInfo()
     var text by remember { mutableStateOf("") }
-    var active by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),

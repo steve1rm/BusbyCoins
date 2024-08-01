@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import me.androidbox.presentation.R
 import me.androidbox.presentation.coin_list.CoinListState
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 import me.androidbox.presentation.utils.appendWithSuffix
@@ -118,7 +120,7 @@ fun CoinDetailContent(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(text = coinListState.description)
+            Text(text = coinListState.description.trim().ifBlank { stringResource(R.string.no_description) })
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -129,17 +131,20 @@ fun CoinDetailContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            modifier = Modifier.fillMaxWidth()
-                .clickable {
-                    onOpenWebsiteClicked(coinListState.websiteUrl)
-                },
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            text = "go to website".uppercase(),
-            color = Color(0xFF38A0FF)
-        )
+        if(coinListState.websiteUrl.isNotBlank()) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        onOpenWebsiteClicked(coinListState.websiteUrl)
+                    },
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                text = "go to website".uppercase(),
+                color = Color(0xFF38A0FF)
+            )
+        }
     }
 }
 
