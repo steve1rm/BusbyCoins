@@ -57,7 +57,7 @@ class CoinListViewModel(
         viewModelScope.launch {
             coinListRepositoryImp
                 .getPagedCoinList(searchTerm)
-                .debounce(300)
+                .debounce(500)
                 .map { pagingData ->
                     pagingData
                         .filter { coinModel ->
@@ -115,10 +115,22 @@ class CoinListViewModel(
         viewModelScope.launch {
             coinDetailState = coinDetailState.copy(isLoading = true)
 
-            when(val checkResult = fetchCoinDetailUseCase.execute(uuid = uuid)) {
+            val checkResult = fetchCoinDetailUseCase.execute(uuid = uuid)
+
+            when(checkResult) {
                 is CheckResult.Failure -> {
-                    coinDetailState = coinDetailState.copy(isLoading = true)
-                    /** Show error */
+                    coinDetailState = coinDetailState.copy(
+                        imageUri = "",
+                        name = "",
+                        symbol = "",
+                        price = "",
+                        change = "",
+                        websiteUrl = "",
+                        color = "",
+                        marketCap = "",
+                        isLoading = false,
+                        description = checkResult.exceptionError.toString(),
+                        hasError = true)
                 }
                 is CheckResult.Success -> {
                     coinDetailState = coinDetailState.copy(
@@ -131,7 +143,8 @@ class CoinListViewModel(
                         websiteUrl = checkResult.data.data.coin.websiteUrl,
                         color = checkResult.data.data.coin.color,
                         marketCap = checkResult.data.data.coin.marketCap,
-                        isLoading = false
+                        isLoading = false,
+                        hasError = false
                     )
                 }
             }

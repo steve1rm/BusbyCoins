@@ -11,5 +11,6 @@ data class CoinListState(
     val websiteUrl: String = "",
     val marketCap: String = "",
     val color: String = "",
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val hasError: Boolean = false
 )
