@@ -115,9 +115,7 @@ class CoinListViewModel(
         viewModelScope.launch {
             coinDetailState = coinDetailState.copy(isLoading = true)
 
-            val checkResult = fetchCoinDetailUseCase.execute(uuid = uuid)
-
-            when(checkResult) {
+            when(val checkResult = fetchCoinDetailUseCase.execute(uuid = uuid)) {
                 is CheckResult.Failure -> {
                     coinDetailState = coinDetailState.copy(
                         imageUri = "",
