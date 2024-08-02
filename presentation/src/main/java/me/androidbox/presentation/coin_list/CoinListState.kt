@@ -12,5 +12,11 @@ data class CoinListState(
     val marketCap: String = "",
     val color: String = "",
     val isLoading: Boolean = false,
-    val hasError: Boolean = false
-)
+    val hasError: Boolean = false,
+    val itemCardType: ItemCardType = ItemCardType.COIN_CARD
+) {
+    enum class ItemCardType {
+        COIN_CARD,
+        INVITE_FRIEND_CARD
+    }
+}

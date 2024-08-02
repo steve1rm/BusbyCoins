@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
+import androidx.paging.insertHeaderItem
 import androidx.paging.map
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.FlowPreview
@@ -24,6 +25,7 @@ import me.androidbox.domain.coin_detail.usescases.FetchCoinDetailUseCase
 import me.androidbox.domain.coin_list.usecases.FetchCoinListUseCase
 import me.androidbox.domain.scheduler.SyncUpdateCoinsScheduler
 import me.androidbox.domain.utils.CheckResult
+import me.androidbox.presentation.coin_list.components.InviteFriendCard
 
 class CoinListViewModel(
     private val fetchCoinListUseCase: FetchCoinListUseCase,
@@ -77,7 +79,17 @@ class CoinListViewModel(
                 }
                 .cachedIn(viewModelScope)
                 .collect { pagingData ->
-                    _coinListFlow.value = pagingData
+                    val inviteCardSearched = if(searchTerm.contains("invite", ignoreCase = true)) {
+                       pagingData.insertHeaderItem(
+                            item = CoinListState(
+                                itemCardType = CoinListState.ItemCardType.INVITE_FRIEND_CARD
+                            )
+                        )
+                    }
+                    else {
+                        pagingData
+                    }
+                    _coinListFlow.value = inviteCardSearched
                 }
         }
     }
@@ -115,9 +127,7 @@ class CoinListViewModel(
         viewModelScope.launch {
             coinDetailState = coinDetailState.copy(isLoading = true)
 
-            val checkResult = fetchCoinDetailUseCase.execute(uuid = uuid)
-
-            when(checkResult) {
+            when(val checkResult = fetchCoinDetailUseCase.execute(uuid = uuid)) {
                 is CheckResult.Failure -> {
                     coinDetailState = coinDetailState.copy(
                         imageUri = "",
