@@ -67,7 +67,6 @@ fun CoinListScreen(
     val pullToRefreshState = rememberPullToRefreshState()
     val rememberWindowInfo = rememberWindowInfo()
     var text by remember { mutableStateOf("") }
-    var active by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -158,8 +157,8 @@ fun CoinListScreen(
                                             items(
                                                 items = coinTopRankedState
                                             ) { coin ->
-                                                CoinDetailVerticalCard(coin) {
-                                                    /** no-op */
+                                                CoinDetailVerticalCard(coin) { webUrl ->
+                                //                    onOpenWebsiteClicked(webUrl)
                                                 }
                                             }
                                         }
@@ -206,15 +205,25 @@ fun CoinListScreen(
                         }
 
                         coinListPager[index]?.let { coinListState ->
-                            CoinListCard(
-                                coinListState = coinListState,
-                                onCardClicked = { uuid: String ->
-                                    isBottomSheetOpen = true
-                                    onCoinListAction(CoinListAction.CoinListCardClicked(uuid = uuid))
-                                    Logger.d {
-                                        "uuid: $uuid"
+                            when(coinListState.itemCardType) {
+                                CoinListState.ItemCardType.INVITE_FRIEND_CARD -> {
+                                    InviteFriendCard { webUrl ->
+                                        onOpenWebsiteClicked(webUrl)
                                     }
-                                })
+                                }
+
+                                CoinListState.ItemCardType.COIN_CARD -> {
+                                    CoinListCard(
+                                        coinListState = coinListState,
+                                        onCardClicked = { uuid: String ->
+                                            isBottomSheetOpen = true
+                                            onCoinListAction(CoinListAction.CoinListCardClicked(uuid = uuid))
+                                            Logger.d {
+                                                "uuid: $uuid"
+                                            }
+                                        })
+                                }
+                            }
                         }
                     }
 
@@ -280,7 +289,8 @@ fun CoinListScreen(
                             items(
                                 items = coinTopRankedState
                             ) { coin ->
-                                CoinDetailVerticalCard(coin) {
+                                CoinDetailVerticalCard(coin) { webUrl ->
+                              //      onOpenWebsiteClicked(webUrl)
                                 }
                             }
                         }

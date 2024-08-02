@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import me.androidbox.presentation.R
 import me.androidbox.presentation.coin_list.CoinListState
 import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
 import me.androidbox.presentation.utils.appendWithSuffix
@@ -47,78 +49,84 @@ fun CoinDetailContent(
                 .padding(horizontal = 24.dp)
         ) {
 
-            Row(modifier = Modifier.fillMaxWidth()) {
-                KamelImage(
-                    modifier = Modifier.size(50.dp),
-                    resource = asyncPainterResource(
-                        data = coinListState.imageUri
-                    ),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    onLoading = {
-                        CircularProgressIndicator()
-                    }
-                )
+            if(!coinListState.hasError) {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    KamelImage(
+                        modifier = Modifier.size(50.dp),
+                        resource = asyncPainterResource(
+                            data = coinListState.imageUri
+                        ),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        onLoading = {
+                            CircularProgressIndicator()
+                        }
+                    )
 
-                Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
 
-                Column(
-                    modifier = Modifier.padding(horizontal = 24.dp)
-                ) {
-                    Row {
-                        Text(text = coinListState.name,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = parseColor(coinListState.color))
+                    Column(
+                        modifier = Modifier.padding(horizontal = 24.dp)
+                    ) {
+                        Row {
+                            Text(
+                                text = coinListState.name,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = parseColor(coinListState.color)
+                            )
 
-                        Spacer(modifier = Modifier.width(6.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
 
-                        Text(text = "(${coinListState.symbol})",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onPrimary)
-                    }
-                    Row {
-                        Text(
-                            text = "price".uppercase(),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
+                            Text(
+                                text = "(${coinListState.symbol})",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                        Row {
+                            Text(
+                                text = "price".uppercase(),
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
 
-                        Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
 
-                        Text(
-                            text = "$${coinListState.price.toFormattedPrice(decimalPlaces = 2)}",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
+                            Text(
+                                text = "$${coinListState.price.toFormattedPrice(decimalPlaces = 2)}",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
 
-                    Row {
-                        Text(
-                            text = "market cap".uppercase(),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
+                        Row {
+                            Text(
+                                text = "market cap".uppercase(),
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
 
-                        Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
 
-                        Text(
-                            text = "$${coinListState.marketCap.appendWithSuffix()}",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
+                            Text(
+                                text = "$${coinListState.marketCap.appendWithSuffix()}",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(text = coinListState.description)
+            Text(text = coinListState.description.trim().ifBlank { stringResource(R.string.no_description) })
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -129,17 +137,20 @@ fun CoinDetailContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            modifier = Modifier.fillMaxWidth()
-                .clickable {
-                    onOpenWebsiteClicked(coinListState.websiteUrl)
-                },
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            text = "go to website".uppercase(),
-            color = Color(0xFF38A0FF)
-        )
+        if(coinListState.websiteUrl.isNotBlank()) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        onOpenWebsiteClicked(coinListState.websiteUrl)
+                    },
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                text = "go to website".uppercase(),
+                color = Color(0xFF38A0FF)
+            )
+        }
     }
 }
 

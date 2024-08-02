@@ -1,7 +1,6 @@
 package me.androidbox.presentation.coin_list
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.IntegerRes
 import me.androidbox.presentation.R
 
 enum class ChangeVariation(

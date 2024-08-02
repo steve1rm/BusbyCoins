@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
+import androidx.paging.insertHeaderItem
 import androidx.paging.map
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.FlowPreview
@@ -24,6 +25,7 @@ import me.androidbox.domain.coin_detail.usescases.FetchCoinDetailUseCase
 import me.androidbox.domain.coin_list.usecases.FetchCoinListUseCase
 import me.androidbox.domain.scheduler.SyncUpdateCoinsScheduler
 import me.androidbox.domain.utils.CheckResult
+import me.androidbox.presentation.coin_list.components.InviteFriendCard
 
 class CoinListViewModel(
     private val fetchCoinListUseCase: FetchCoinListUseCase,
@@ -57,7 +59,7 @@ class CoinListViewModel(
         viewModelScope.launch {
             coinListRepositoryImp
                 .getPagedCoinList(searchTerm)
-                .debounce(300)
+                .debounce(500)
                 .map { pagingData ->
                     pagingData
                         .filter { coinModel ->
@@ -77,7 +79,17 @@ class CoinListViewModel(
                 }
                 .cachedIn(viewModelScope)
                 .collect { pagingData ->
-                    _coinListFlow.value = pagingData
+                    val inviteCardSearched = if(searchTerm.contains("invite", ignoreCase = true)) {
+                       pagingData.insertHeaderItem(
+                            item = CoinListState(
+                                itemCardType = CoinListState.ItemCardType.INVITE_FRIEND_CARD
+                            )
+                        )
+                    }
+                    else {
+                        pagingData
+                    }
+                    _coinListFlow.value = inviteCardSearched
                 }
         }
     }
@@ -117,8 +129,18 @@ class CoinListViewModel(
 
             when(val checkResult = fetchCoinDetailUseCase.execute(uuid = uuid)) {
                 is CheckResult.Failure -> {
-                    coinDetailState = coinDetailState.copy(isLoading = true)
-                    /** Show error */
+                    coinDetailState = coinDetailState.copy(
+                        imageUri = "",
+                        name = "",
+                        symbol = "",
+                        price = "",
+                        change = "",
+                        websiteUrl = "",
+                        color = "",
+                        marketCap = "",
+                        isLoading = false,
+                        description = checkResult.exceptionError.toString(),
+                        hasError = true)
                 }
                 is CheckResult.Success -> {
                     coinDetailState = coinDetailState.copy(
@@ -131,7 +153,8 @@ class CoinListViewModel(
                         websiteUrl = checkResult.data.data.coin.websiteUrl,
                         color = checkResult.data.data.coin.color,
                         marketCap = checkResult.data.data.coin.marketCap,
-                        isLoading = false
+                        isLoading = false,
+                        hasError = false
                     )
                 }
             }
