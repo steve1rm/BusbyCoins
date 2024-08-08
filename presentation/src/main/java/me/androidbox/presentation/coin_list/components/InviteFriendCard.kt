@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.presentation.R
-import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
+import me.androidbox.designsystem.ui.theme.BusbyCoinsTheme
 
 @Composable
 fun InviteFriendCard(

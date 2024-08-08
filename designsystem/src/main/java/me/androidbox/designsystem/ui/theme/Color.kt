@@ -1,4 +1,4 @@
-package me.androidbox.presentation.ui.theme
+package me.androidbox.designsystem.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

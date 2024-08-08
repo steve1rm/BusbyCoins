@@ -4,16 +4,14 @@ plugins {
 }
 
 android {
-    namespace = "me.androidbox.presentation"
+    namespace = "me.androidbox.designsystem"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+     //   consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -40,17 +38,12 @@ android {
         kotlinCompilerExtensionVersion = "1.5.12"
     }
     packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+        this.resources.excludes.add("META-INF/LICENSE.md")
+        this.resources.excludes.add("META-INF/LICENSE-notices.md")
     }
 }
 
 dependencies {
-    implementation(project(":domain"))
-    implementation(project(":data"))
-    implementation(project(":designsystem"))
-
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
@@ -76,11 +69,6 @@ dependencies {
     implementation(libs.kamil.image.loader)
     implementation(libs.androidx.animation.graphics.android)
 
-    testImplementation("com.google.truth:truth:1.4.2")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.junit)
-    testImplementation(libs.coroutinesTest)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
