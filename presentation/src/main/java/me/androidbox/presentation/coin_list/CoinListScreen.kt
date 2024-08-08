@@ -47,7 +47,9 @@ import me.androidbox.presentation.coin_list.components.CoinDetailVerticalCard
 import me.androidbox.presentation.coin_list.components.CoinListCard
 import me.androidbox.presentation.coin_list.components.InviteFriendCard
 import me.androidbox.presentation.coin_list.components.TopBarSearch
-import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
+import me.androidbox.designsystem.ui.theme.BusbyCoinsTheme
+import me.androidbox.designsystem.utils.WindowInfo
+import me.androidbox.designsystem.utils.rememberWindowInfo
 
 @Composable
 fun CoinListScreen(

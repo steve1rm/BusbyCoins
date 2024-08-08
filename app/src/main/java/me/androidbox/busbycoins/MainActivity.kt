@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.Navigator
 import me.androidbox.busbycoins.navigation.CoinListScreenRoute
-import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
+import me.androidbox.designsystem.ui.theme.BusbyCoinsTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
    //     enableEdgeToEdge()
         setContent {
             BusbyCoinsTheme {
-               Navigator(screen = CoinListScreenRoute)
+                Navigator(screen = CoinListScreenRoute)
             }
         }
     }
