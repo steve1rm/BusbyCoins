@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.TerminalSeparatorType
 import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.paging.insertHeaderItem
@@ -79,7 +80,9 @@ class CoinListViewModel(
                 }
                 .cachedIn(viewModelScope)
                 .collect { pagingData ->
-                    val inviteCardSearched = if(searchTerm.contains("invite", ignoreCase = true)) {
+                    val inviteCardSearched = if(
+                        "invite".startsWith(searchTerm, ignoreCase = true) && searchTerm.isNotBlank()
+                    ) {
                        pagingData.insertHeaderItem(
                             item = CoinListState(
                                 itemCardType = CoinListState.ItemCardType.INVITE_FRIEND_CARD

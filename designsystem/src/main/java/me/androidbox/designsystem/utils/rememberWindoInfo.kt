@@ -1,4 +1,4 @@
-package me.androidbox.presentation.coin_list
+package me.androidbox.designsystem.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration

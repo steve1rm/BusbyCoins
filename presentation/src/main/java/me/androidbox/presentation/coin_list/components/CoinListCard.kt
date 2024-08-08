@@ -34,7 +34,7 @@ import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import me.androidbox.presentation.R
 import me.androidbox.presentation.coin_list.CoinListState
-import me.androidbox.presentation.ui.theme.BusbyCoinsTheme
+import me.androidbox.designsystem.ui.theme.BusbyCoinsTheme
 import me.androidbox.presentation.utils.toFormattedPrice
 
 @Composable
