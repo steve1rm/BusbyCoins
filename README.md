@@ -31,7 +31,12 @@ Uses coins api to fetch crypto currency coins using pagnation to get an infinate
 - [x] Dark and light theme
 - [X] kermit for logging
 - [X] work manager for scheduling updates
-- [X] kamel for image loading 
+- [X] kamel for image loading
+
+# API Key usage
+Update your `local.properties` file to include the follwing:
+</br>
+COIN_RANKING_API_KEY = "ADD YOUR OWN API KEY HERE AFTER REGISTERING WITH COINRANKING"
 
 # Screenshots
 ![Screenshot from 2024-07-11 20-03-25](https://github.com/steve1rm/BusbyCoins/assets/14260802/c478be1d-95fa-42c7-85f6-089c20c2451f)
