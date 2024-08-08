@@ -36,7 +36,9 @@ Uses coins api to fetch crypto currency coins using pagnation to get an infinate
 # API Key usage
 Update your `local.properties` file to include the follwing:
 </br>
-COIN_RANKING_API_KEY = "ADD YOUR OWN API KEY HERE AFTER REGISTERING WITH COINRANKING"
+COIN_RANKING_API_KEY = "Add your own api key after registering with coin ranking"
+</br>
+https://coinranking.com/
 
 # Screenshots
 ![Screenshot from 2024-07-11 20-03-25](https://github.com/steve1rm/BusbyCoins/assets/14260802/c478be1d-95fa-42c7-85f6-089c20c2451f)
