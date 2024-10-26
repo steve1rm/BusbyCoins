@@ -83,7 +83,7 @@ fun CoinListCard(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.wrapContentWidth(),
                     text = coinListState.name,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
@@ -103,11 +103,11 @@ fun CoinListCard(
             Spacer(modifier = Modifier.width(8.dp))
 
             Column(
-                modifier = Modifier.wrapContentWidth(unbounded = true),
+                modifier = Modifier.wrapContentWidth(),
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.wrapContentWidth(),
                     text = "$${coinListState.price.toFormattedPrice()}",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
