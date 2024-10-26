@@ -1,7 +1,6 @@
 package me.androidbox.presentation.coin_list.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import me.androidbox.designsystem.ui.theme.BusbyCoinsTheme
 import me.androidbox.presentation.R
 import me.androidbox.presentation.coin_list.CoinListState
-import me.androidbox.designsystem.ui.theme.BusbyCoinsTheme
 import me.androidbox.presentation.utils.toFormattedPrice
 
 @Composable
@@ -60,52 +60,50 @@ fun CoinListCard(
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.weight(2f),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                KamelImage(
-                    modifier = Modifier.size(40.dp),
-                    resource = asyncPainterResource(
-                        data = coinListState.imageUri
-                    ),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    onLoading = {
-                        CircularProgressIndicator(
-                            color = Color.Blue
-                        )
-                    }
-                )
-
-                Spacer(modifier.width(16.dp))
-
-                Column {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = coinListState.name,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1
-                    )
-
-                    Text(
-                        text = coinListState.symbol,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+            KamelImage(
+                modifier = Modifier.size(40.dp),
+                resource = asyncPainterResource(
+                    data = coinListState.imageUri
+                ),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                onLoading = {
+                    CircularProgressIndicator(
+                        color = Color.Blue
                     )
                 }
-            }
+            )
+
+            Spacer(modifier.width(16.dp))
 
             Column(
                 modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = coinListState.name,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+
+                Text(
+                    text = coinListState.symbol,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Column(
+                modifier = Modifier.wrapContentWidth(unbounded = true),
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
@@ -121,15 +119,27 @@ fun CoinListCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = if(coinListState.change.isChangeUp()) { painterResource(R.drawable.arrow_up) } else { painterResource(R.drawable.arrow_down) },
+                        painter = if (coinListState.change.isChangeUp()) {
+                            painterResource(R.drawable.arrow_up)
+                        } else {
+                            painterResource(R.drawable.arrow_down)
+                        },
                         contentDescription = null,
-                        tint = if(coinListState.change.isChangeUp()) { Color(0xFF13BC24) } else { Color(0xFFF82D2D)}
+                        tint = if (coinListState.change.isChangeUp()) {
+                            Color(0xFF13BC24)
+                        } else {
+                            Color(0xFFF82D2D)
+                        }
                     )
                     Text(
                         text = coinListState.change.replaceFirst("-", ""),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if(coinListState.change.isChangeUp()) { Color(0xFF13BC24) } else { Color(0xFFF82D2D)}
+                        color = if (coinListState.change.isChangeUp()) {
+                            Color(0xFF13BC24)
+                        } else {
+                            Color(0xFFF82D2D)
+                        }
                     )
                 }
             }
@@ -150,9 +160,9 @@ fun PreviewCoinListCard() {
         CoinListCard(
             coinListState = CoinListState(
                 "",
-                "Bitcoin",
+                "Bitcoin are the first and best bitcoins you can buy",
                 "BIT",
-                "45.5869",
+                "45.5869,383,98",
                 "-5.0d"
             ),
             onCardClicked = {}
