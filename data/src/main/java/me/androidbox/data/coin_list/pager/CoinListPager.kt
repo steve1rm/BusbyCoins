@@ -13,6 +13,7 @@ class CoinListPager(
 ) : PagingSource<Int, CoinModel>() {
 
     override fun getRefreshKey(state: PagingState<Int, CoinModel>): Int? {
+        println("GETREFRESHKEY")
         val pageKey = state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
 
@@ -23,6 +24,7 @@ class CoinListPager(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CoinModel> {
+        println("LOAD")
         /** If the key is null we are at the first page (1) */
         val position = params.key ?: 1
         val offset = (position - 1) * 20
